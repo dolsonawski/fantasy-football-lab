@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 mimetypes.add_type("application/manifest+json", ".webmanifest")
 mimetypes.add_type("text/javascript", ".js")
 
-from app.routers import players, rankings, draft, roster, trade, meta, images, league, auth, season
+from app.routers import players, rankings, draft, roster, trade, meta, images, league, season
 
 app = FastAPI(title="Fantasy Football App")
 
@@ -24,7 +24,6 @@ async def no_cache_static(request: Request, call_next):
         response.headers["Cache-Control"] = "no-cache"
     return response
 
-app.include_router(auth.router)
 app.include_router(players.router)
 app.include_router(rankings.router)
 app.include_router(draft.router)

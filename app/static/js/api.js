@@ -1,10 +1,12 @@
+import { getDeviceId } from "./identity.js";
+
 const BASE = "";
 
 async function request(path, options = {}) {
   let res;
   try {
     res = await fetch(BASE + path, {
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "X-FFL-UID": getDeviceId() },
       ...options,
     });
   } catch (_) {
@@ -29,11 +31,6 @@ async function request(path, options = {}) {
 
 export const api = {
   getMeta: () => request(`/api/meta`),
-
-  me: () => request(`/api/auth/me`),
-  signup: (body) => request(`/api/auth/signup`, { method: "POST", body: JSON.stringify(body) }),
-  login: (body) => request(`/api/auth/login`, { method: "POST", body: JSON.stringify(body) }),
-  logout: () => request(`/api/auth/logout`, { method: "POST" }),
 
   tradeMatches: (params = {}) =>
     request(`/api/trade/matches?${new URLSearchParams(params)}`),

@@ -54,11 +54,14 @@ The image sets `FFL_DATA_DIR=/data` and `FFL_SECURE_COOKIES=1`; mount a volume
 at `/data` (as shown) to persist accounts and drafts. Put it behind an HTTPS
 proxy/load balancer, or use a platform that terminates TLS for you.
 
-## 3. Everyone signs in
+## 3. No sign-in needed — per-device identity
 
-The landing page is a sign-in / create-profile screen. Each person makes their
-own profile; their mock drafts, imported leagues, and trade analysis are saved
-to that account. Share the link, they sign up, done.
+There is no login. Each browser silently generates a random device ID on
+first visit (stored in that browser); every request carries it, and the
+server namespaces each person's mock drafts, imported leagues, and trades
+by that ID. Share the link — everyone automatically gets their own private
+workspace. The ID chip (top-right) lets anyone copy their ID and paste it
+into another device/browser to carry their data with them.
 
 ## Environment variables
 | Var | Default | Purpose |

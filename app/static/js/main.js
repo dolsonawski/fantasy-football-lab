@@ -6,8 +6,8 @@ import { renderRoster } from "./pages/roster.js";
 import { renderTrade } from "./pages/trade.js";
 import { renderImport } from "./pages/import.js";
 import { renderSeason } from "./pages/season.js";
-import { renderAuthGate } from "./pages/auth.js";
 import { initPlayerDetail } from "./player_detail.js";
+import { getDeviceId, setDeviceId } from "./identity.js";
 
 registerRoute("rankings", renderRankings);
 registerRoute("draft", renderDraft);
@@ -16,62 +16,81 @@ registerRoute("roster", renderRoster);
 registerRoute("trade", renderTrade);
 registerRoute("import", renderImport);
 
-let routerStarted = false;
-
-function initials(name) {
-  return (name || "?").trim().split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
-}
-
-function mountApp(user) {
-  const topbar = document.querySelector("header.topbar");
-  const nav = document.getElementById("nav-tabs");
+function renderIdentityChip() {
   const seasonTag = document.getElementById("season-tag");
-  topbar.style.display = "";
-  nav.style.display = "";
-
-  // User chip + logout in the top-right, replacing the plain season tag slot.
-  let account = document.getElementById("account-chip");
-  if (!account) {
-    account = document.createElement("div");
-    account.id = "account-chip";
-    account.className = "account-chip";
-    seasonTag.after(account);
+  let chip = document.getElementById("account-chip");
+  if (!chip) {
+    chip = document.createElement("div");
+    chip.id = "account-chip";
+    chip.className = "account-chip";
+    seasonTag.after(chip);
   }
-  account.innerHTML = `
-    <span class="avatar-initials" title="${user.display_name}">${initials(user.display_name)}</span>
-    <span class="account-name">${user.display_name}</span>
-    <button class="logout-btn" id="logout-btn">Sign out</button>
+  const id = getDeviceId();
+  chip.innerHTML = `
+    <span class="avatar-initials" title="Your device ID">${id.slice(0, 2).toUpperCase()}</span>
+    <button class="logout-btn" id="id-menu-btn" title="${id}">ID: ${id.slice(0, 6)}&hellip;</button>
   `;
-  account.querySelector("#logout-btn").addEventListener("click", async () => {
-    try { await api.logout(); } catch (_) { /* ignore */ }
-    window.location.hash = "#/rankings";
-    window.location.reload();
+  chip.querySelector("#id-menu-btn").addEventListener("click", () => openIdentityPanel());
+}
+
+function openIdentityPanel() {
+  const id = getDeviceId();
+  const existing = document.getElementById("id-overlay");
+  if (existing) existing.remove();
+
+  const overlay = document.createElement("div");
+  overlay.id = "id-overlay";
+  overlay.className = "pd-overlay";
+  overlay.innerHTML = `
+    <div class="pd-modal" role="dialog" aria-modal="true" style="max-width:440px;">
+      <div class="pd-body">
+        <div class="pd-header">
+          <div class="pd-id"><div><div class="pd-name">Your Device ID</div>
+            <div class="tag-note">This is what keeps your drafts, leagues, and trades private to you &mdash; no password needed.</div>
+          </div></div>
+          <button class="pd-x" aria-label="Close">&times;</button>
+        </div>
+        <div class="controls" style="flex-direction:column;align-items:stretch;margin-top:14px;">
+          <label>Your ID
+            <input type="text" id="id-display" value="${id}" readonly style="font-family:monospace;">
+          </label>
+          <button id="id-copy">Copy ID</button>
+          <p class="tag-note" style="margin-top:10px;">
+            To use the same data on another device or browser, open this app there and paste your ID below.
+          </p>
+          <label>Switch to a different ID
+            <input type="text" id="id-input" placeholder="Paste an ID to switch to it">
+          </label>
+          <button class="secondary" id="id-switch">Switch</button>
+          <div id="id-error" class="error-state" style="display:none;margin-top:4px;"></div>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) overlay.remove(); });
+  overlay.querySelector(".pd-x").addEventListener("click", () => overlay.remove());
+  overlay.querySelector("#id-copy").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(id);
+      const btn = overlay.querySelector("#id-copy");
+      btn.textContent = "Copied!";
+      setTimeout(() => { btn.textContent = "Copy ID"; }, 1500);
+    } catch (_) { /* clipboard may be unavailable; the field is selectable */ }
   });
-
-  api.getMeta()
-    .then((meta) => {
-      seasonTag.textContent =
-        `${meta.projection_season || "—"} projections · ${meta.season} stats · ${meta.player_count} players`;
-    })
-    .catch(() => {});
-
-  if (!routerStarted) {
-    routerStarted = true;
-    initPlayerDetail();
-    startRouter();
-  } else {
-    if (!window.location.hash) window.location.hash = "#/rankings";
-    window.dispatchEvent(new HashChangeEvent("hashchange"));
-  }
+  overlay.querySelector("#id-switch").addEventListener("click", () => {
+    const errEl = overlay.querySelector("#id-error");
+    try {
+      setDeviceId(overlay.querySelector("#id-input").value);
+      window.location.reload();
+    } catch (err) {
+      errEl.style.display = "block";
+      errEl.textContent = err.message;
+    }
+  });
 }
 
-function showGate() {
-  // Hide the chrome while the sign-in gate is up.
-  document.querySelector("header.topbar").style.display = "none";
-  renderAuthGate((user) => mountApp(user));
-}
-
-function showUnreachable() {
+function showUnreachable(retry) {
   document.querySelector("header.topbar").style.display = "none";
   document.getElementById("app").innerHTML = `
     <div class="auth-shell"><div class="auth-card" style="text-align:center;">
@@ -80,12 +99,30 @@ function showUnreachable() {
       <p class="tag-note" style="margin:6px 0 18px;">The app is installed, but the backend isn't responding. Make sure the server is running (or the site is deployed), then retry.</p>
       <button id="retry-btn">Retry</button>
     </div></div>`;
-  document.getElementById("retry-btn").addEventListener("click", () => window.location.reload());
+  document.getElementById("retry-btn").addEventListener("click", retry);
 }
 
-api.me()
-  .then((user) => mountApp(user))
+function mountApp(meta) {
+  document.querySelector("header.topbar").style.display = "";
+  renderIdentityChip();
+
+  const seasonTag = document.getElementById("season-tag");
+  seasonTag.textContent = meta
+    ? `${meta.projection_season || "—"} projections · ${meta.season} stats · ${meta.player_count} players`
+    : "";
+
+  initPlayerDetail();
+  startRouter();
+}
+
+// A quick GET confirms the backend is reachable before we start routing —
+// if it's down, show a clear retry screen instead of a half-loaded page.
+api.getMeta()
+  .then((meta) => mountApp(meta))
   .catch((err) => {
-    if (err && err.isNetwork) showUnreachable();
-    else showGate();
+    if (err && err.isNetwork) {
+      showUnreachable(() => window.location.reload());
+    } else {
+      mountApp(null); // server responded (even with an error) — it's reachable
+    }
   });
