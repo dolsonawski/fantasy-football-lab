@@ -25,14 +25,25 @@ which you get automatically with any host below.
 ## 2. Put it on the internet (shareable link)
 
 The app stores accounts, drafts, leagues, and rankings as files under
-`FFL_DATA_DIR`. On a host, point that at a **persistent disk** so data survives
-restarts, and set `FFL_SECURE_COOKIES=1` (all hosts below serve HTTPS).
+`FFL_DATA_DIR`. Ideally that points at a **persistent disk** so data survives
+restarts — but persistent disks cost money on every host, so the default
+blueprint below skips it and stays free.
 
-### Render (easiest, free tier)
+### Render (easiest, free tier — no cost)
 1. Push this folder to a GitHub repo.
 2. Render → **New → Blueprint** → select the repo. It reads `render.yaml`
-   (Python build, HTTPS, a 1 GB persistent disk at `/var/data`).
+   (Python build, HTTPS, free plan, no disk).
 3. Deploy. You get a `https://<name>.onrender.com` link to share.
+
+**Tradeoff of staying free:** Render's free tier has no persistent disk and
+spins the service down after ~15 minutes idle. Every restart/redeploy/wake
+wipes accounts, mock drafts, and imported leagues — you start clean each
+time. Fine for a hobby app you and friends poke at in a sitting; not fine if
+you want your draft history to still be there next week.
+
+**If you later want data to actually persist**, upgrade the Render service to
+Starter (~$7/mo, no code changes — just add a `disk:` block back to
+`render.yaml` pointing `FFL_DATA_DIR` at the mount path).
 
 ### Docker (Fly.io, Railway, a VPS, etc.)
 ```

@@ -1,6 +1,12 @@
-# One-click deploy blueprint for Render (https://render.com).
-# In Render: New → Blueprint → point at this repo. Free tier works; add the
-# persistent disk below so accounts and drafts survive restarts/deploys.
+# One-click deploy blueprint for Render (https://render.com), free tier.
+# In Render: New → Blueprint → point at this repo.
+#
+# NOTE: free tier has no persistent disk, so accounts/drafts/leagues reset
+# whenever the service restarts or redeploys — and free services also spin
+# down after ~15 min idle, which counts as a restart. Fine for a hobby app
+# you and friends poke at in a sitting; if you want data to actually stick
+# around, upgrade the service to Starter (~$7/mo) and add a disk block back
+# (see git history for the version that had one).
 services:
   - type: web
     name: fantasy-football-lab
@@ -9,13 +15,7 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips="*"
     envVars:
-      - key: FFL_DATA_DIR
-        value: /var/data
       - key: FFL_SECURE_COOKIES
         value: "1"
       - key: PYTHON_VERSION
         value: "3.12.7"
-    disk:
-      name: ffl-data
-      mountPath: /var/data
-      sizeGB: 1
