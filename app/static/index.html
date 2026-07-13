@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Fantasy Football Lab</title>
+  <meta name="description" content="Find the values. Dodge the landmines. Cross-platform fantasy football rankings, mock drafts, roster and trade analysis.">
+  <meta name="theme-color" content="#0b0e14">
+
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icons/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+
+  <!-- iOS add-to-home-screen -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FF Lab">
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot">&#9679;</span>
+      <span>Fantasy Football Lab<span class="brand-tag">Find the values. Dodge the landmines.</span></span>
+    </div>
+    <nav class="tabs" id="nav-tabs">
+      <a href="#/rankings" data-route="rankings">Rankings</a>
+      <a href="#/draft" data-route="draft">Mock Draft</a>
+      <a href="#/season" data-route="season">Season</a>
+      <a href="#/roster" data-route="roster">Roster Analysis</a>
+      <a href="#/trade" data-route="trade">Trade Analyzer</a>
+      <a href="#/import" data-route="import">Import</a>
+    </nav>
+    <div class="season-tag" id="season-tag"></div>
+  </header>
+
+  <main id="app">
+    <div class="loading">Loading&hellip;</div>
+  </main>
+
+  <footer class="app-footer">
+    <span class="footer-brand">&#9679; Fantasy Football Lab</span>
+    Live data: Sleeper (players, stats, projections, ADP) &middot; Fantasy Football Calculator (ADP) &middot; ESPN (rankings, ADP, leagues) &middot; FantasyPros ECR via your uploaded export.
+    Value math runs locally &mdash; weighted consensus deltas, the JuiceBoxOne way.
+  </footer>
+
+  <script type="module" src="/js/main.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
