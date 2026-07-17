@@ -53,7 +53,13 @@ export const api = {
     const form = new FormData();
     form.append("file", file);
     form.append("name", name || "");
-    const res = await fetch(`/api/rankings/import`, { method: "POST", body: form });
+    // Keep FormData (no manual Content-Type — the browser sets the boundary)
+    // but still identify the uploader so imported sets are owned correctly.
+    const res = await fetch(`/api/rankings/import`, {
+      method: "POST",
+      headers: { "X-FFL-UID": getDeviceId() },
+      body: form,
+    });
     if (!res.ok) {
       let detail = res.statusText;
       try { detail = (await res.json()).detail || detail; } catch (_) { /* ignore */ }
@@ -76,6 +82,7 @@ export const api = {
   startSit: (params = {}) => request(`/api/season/start-sit?${new URLSearchParams(params)}`),
   waivers: (params = {}) => request(`/api/season/waivers?${new URLSearchParams(params)}`),
   byePlanner: (params = {}) => request(`/api/season/bye-planner?${new URLSearchParams(params)}`),
+  playoffOutlook: (params = {}) => request(`/api/season/playoff-outlook?${new URLSearchParams(params)}`),
   liveDraft: (draftId, format = "ppr") => request(`/api/draft/live/${draftId}?format=${format}`),
 
   draftGrade: (draftId) => request(`/api/draft/${draftId}/grade`),
@@ -89,8 +96,6 @@ export const api = {
 
   startDraft: (body) =>
     request(`/api/draft/start`, { method: "POST", body: JSON.stringify(body) }),
-
-  getDraft: (draftId) => request(`/api/draft/${draftId}`),
 
   availableInDraft: (draftId, params = {}) =>
     request(`/api/draft/${draftId}/available?${new URLSearchParams(params)}`),

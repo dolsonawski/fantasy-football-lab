@@ -1,5 +1,6 @@
 import { api } from "../api.js";
 import { escapeHtml } from "../util.js";
+import { getDeviceId } from "../identity.js";
 
 export async function renderImport(container) {
   let sets = [];
@@ -70,6 +71,7 @@ export async function renderImport(container) {
           The consensus board the whole app measures value against — draft-room value picks, slip analysis,
           and the default rankings comparison. Refresh it anytime with a current FantasyPros export.
         </p>
+        <p class="tag-note" style="margin:0 0 10px;">This board is shared by everyone on the site — updating it replaces the reference for all users.</p>
         <div class="controls" style="flex-direction:column;align-items:stretch;">
           <label>FantasyPros rankings export (.csv / .xlsx)
             <input type="file" id="ecr-file" accept=".csv,.xlsx,.xlsm">
@@ -124,7 +126,11 @@ export async function renderImport(container) {
     try {
       const form = new FormData();
       form.append("file", file);
-      const res = await fetch("/api/rankings/ecr", { method: "POST", body: form });
+      const res = await fetch("/api/rankings/ecr", {
+        method: "POST",
+        headers: { "X-FFL-UID": getDeviceId() },
+        body: form,
+      });
       if (!res.ok) throw new Error((await res.json()).detail || res.statusText);
       const data = await res.json();
       resultEl.innerHTML = `

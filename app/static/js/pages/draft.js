@@ -8,6 +8,22 @@ const boardFilters = { position: "ALL", search: "" };
 let roomViewSet = "";       // "" = the room's own draft board; else a site family/id
 let roomSources = [];       // [{id, name}] ranking families for the in-room switcher
 
+// Mobile draft-room tab (module state so it survives the re-render that
+// happens after every pick).
+let roomMobileTab = "suggest";
+const ROOM_MOBILE_TABS = [
+  { id: "suggest", label: "Suggest" },
+  { id: "board", label: "Board" },
+  { id: "team", label: "My Team" },
+  { id: "players", label: "Players" },
+];
+
+let topbarSyncBound = false;
+function syncTopbarOffset() {
+  const topbar = document.querySelector("header.topbar");
+  if (topbar) document.documentElement.style.setProperty("--topbar-h", `${topbar.offsetHeight}px`);
+}
+
 const RANK_FAMILY_RE = /^(adp|sleeper_adp|sleeper_dynasty|espn_rank|espn_adp|proj|computed)$/;
 
 function rankingFamilies(sets) {
@@ -72,19 +88,7 @@ async function renderSetup(container) {
   let sets = [];
   try { sets = (await api.listRankingSets()).sets; } catch (_) { /* ignore */ }
   // Collapse per-format variants: the scoring-format selector picks the variant.
-  const families = [];
-  const seen = new Set();
-  for (const s of sets) {
-    const m = s.id.match(/^(adp|sleeper_adp|sleeper_dynasty|espn_rank|espn_adp|proj|computed)_(standard|half_ppr|ppr)$/);
-    if (m) {
-      if (!seen.has(m[1])) {
-        seen.add(m[1]);
-        families.push({ id: m[1], name: s.name.replace(/\s*\((Standard|Half-PPR|PPR)\)\s*$/, "") });
-      }
-    } else {
-      families.push({ id: s.id, name: s.name });
-    }
-  }
+  const families = rankingFamilies(sets);
 
   const saved = loadSetup();
   const savedTeams = [8, 10, 12, 14, 16].includes(saved.teams) ? saved.teams : 12;
@@ -219,6 +223,7 @@ async function renderSetup(container) {
     try {
       gradeData = null;
       viewingHistory = false;
+      roomMobileTab = "suggest";
       draft = await api.startDraft(body);
       await renderDraft(container);
     } catch (err) {
@@ -336,6 +341,15 @@ function snakeBoardHtml(maxRounds = null) {
 
 /* ------------------------------------------------------------ draft room */
 
+function applyRoomMobileTab(container) {
+  container.querySelectorAll(".room-pane").forEach((pane) => {
+    pane.classList.toggle("active", pane.dataset.pane === roomMobileTab);
+  });
+  container.querySelectorAll("[data-mobile-tab]").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.mobileTab === roomMobileTab);
+  });
+}
+
 async function renderRoom(container) {
   container.innerHTML = `
     <div class="room-header">
@@ -347,8 +361,12 @@ async function renderRoom(container) {
       <button class="secondary" id="new-draft-btn">New Draft</button>
     </div>
 
+    <div class="seg-tabs room-mobile-tabs">
+      ${ROOM_MOBILE_TABS.map((t) => `<button class="seg ${roomMobileTab === t.id ? "active" : ""}" data-mobile-tab="${t.id}">${t.label}</button>`).join("")}
+    </div>
+
     <div class="room-grid">
-      <div>
+      <div class="room-pane" data-pane="suggest">
         <div class="card">
           <h2>Suggested Picks <span class="tag-note" style="font-weight:400;">values measured vs consensus (ECR)</span></h2>
           <div id="urgency-banner"></div>
@@ -356,35 +374,56 @@ async function renderRoom(container) {
           <div id="position-values" style="margin-top:12px;"></div>
         </div>
       </div>
+      <div class="room-pane" data-pane="team">
+        <div class="card">
+          <h2>Your Team</h2>
+          <div id="lineup-panel"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="room-pane" data-pane="board">
       <div class="card">
-        <h2>Your Team</h2>
-        <div id="lineup-panel"></div>
+        <h2>Draft Board</h2>
+        ${snakeBoardHtml(Math.min(draft.rounds, Math.max(draft.current_round + 1, 4)))}
       </div>
     </div>
 
-    <div class="card">
-      <h2>Draft Board</h2>
-      ${snakeBoardHtml(Math.min(draft.rounds, Math.max(draft.current_round + 1, 4)))}
-    </div>
-
-    <div class="card">
-      <h2>All Available Players</h2>
-      <div class="controls">
-        <input type="text" id="avail-search" placeholder="Search players…" value="${escapeHtml(boardFilters.search)}" style="flex:1;max-width:300px;">
-        <select id="avail-position">
-          ${["ALL", "QB", "RB", "WR", "TE", "K", "DEF"].map((p) => `<option value="${p}" ${p === boardFilters.position ? "selected" : ""}>${p}</option>`).join("")}
-        </select>
-        <label style="flex-direction:row;align-items:center;gap:8px;">View by
-          <select id="avail-view"><option value="">Draft board (${escapeHtml(draft.ranking_set)})</option></select>
-        </label>
+    <div class="room-pane" data-pane="players">
+      <div class="card">
+        <h2>All Available Players</h2>
+        <div class="controls">
+          <input type="text" id="avail-search" placeholder="Search players…" value="${escapeHtml(boardFilters.search)}" style="flex:1;max-width:300px;">
+          <select id="avail-position">
+            ${["ALL", "QB", "RB", "WR", "TE", "K", "DEF"].map((p) => `<option value="${p}" ${p === boardFilters.position ? "selected" : ""}>${p}</option>`).join("")}
+          </select>
+          <label style="flex-direction:row;align-items:center;gap:8px;">View by
+            <select id="avail-view"><option value="">Draft board (${escapeHtml(draft.ranking_set)})</option></select>
+          </label>
+        </div>
+        <div id="available-list" class="avail-grid"><div class="loading">Loading&hellip;</div></div>
       </div>
-      <div id="available-list" class="avail-grid"><div class="loading">Loading&hellip;</div></div>
     </div>
   `;
+
+  applyRoomMobileTab(container);
+  container.querySelectorAll("[data-mobile-tab]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      roomMobileTab = btn.dataset.mobileTab;
+      applyRoomMobileTab(container);
+    });
+  });
+
+  syncTopbarOffset();
+  if (!topbarSyncBound) {
+    window.addEventListener("resize", syncTopbarOffset);
+    topbarSyncBound = true;
+  }
 
   container.querySelector("#new-draft-btn").addEventListener("click", async () => {
     draft = null;
     gradeData = null;
+    roomMobileTab = "suggest";
     await renderDraft(container);
   });
 
@@ -567,7 +606,8 @@ function renderLineup(target) {
     .map(([slot, p]) => slotRow(slot, p)).join("");
   const benchRows = draft.user_lineup.bench
     .map((p, i) => slotRow(`BE${i + 1}`, p)).join("");
-  const emptyBench = Math.max(0, 6 - draft.user_lineup.bench.length);
+  const benchSize = draft.roster_config?.BENCH ?? 6;
+  const emptyBench = Math.max(0, benchSize - draft.user_lineup.bench.length);
   const emptyBenchRows = Array.from({ length: emptyBench }, (_, i) =>
     slotRow(`BE${draft.user_lineup.bench.length + i + 1}`, null)).join("");
 
@@ -645,8 +685,10 @@ async function renderGradeView(container) {
     </div>
 
     <div class="card">
-      <h2>Full Draft Board</h2>
-      ${snakeBoardHtml()}
+      <details class="full-board-details" ${window.matchMedia("(max-width: 760px)").matches ? "" : "open"}>
+        <summary>Show full draft board</summary>
+        <div style="margin-top:12px;">${snakeBoardHtml()}</div>
+      </details>
     </div>
 
     <div class="grid-2">

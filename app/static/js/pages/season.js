@@ -1,7 +1,15 @@
 import { api } from "../api.js";
 import { escapeHtml, posPill, fmtNum, formatLabel } from "../util.js";
 
-const state = { leagues: [], leagueKey: "", league: null, teamId: "", format: "ppr", tab: "startsit", week: "" };
+const state = { leagues: [], leagueKey: "", league: null, teamId: "", format: "ppr", tab: "dashboard", week: "" };
+
+const MY_TEAMS_KEY = "ffl_my_teams";
+function loadMyTeams() {
+  try { return JSON.parse(localStorage.getItem(MY_TEAMS_KEY)) || {}; } catch (_) { return {}; }
+}
+function saveMyTeams(map) {
+  try { localStorage.setItem(MY_TEAMS_KEY, JSON.stringify(map)); } catch (_) { /* ignore */ }
+}
 
 export async function renderSeason(container) {
   try { state.leagues = (await api.listLeagues()).leagues; } catch (_) { state.leagues = []; }
@@ -21,7 +29,7 @@ export async function renderSeason(container) {
     <h1>Season Tools</h1>
     <p class="subtitle">Optimal lineups and the best available adds for your team, powered by projections and your league's rosters.</p>
     <div class="card">
-      <div class="controls">
+      <div class="controls" id="se-controls" style="${state.tab === "dashboard" ? "display:none;" : ""}">
         <label>League
           <select id="se-league">
             ${state.leagues.map((l) => `<option value="${l.key}" ${l.key === state.leagueKey ? "selected" : ""}>${escapeHtml(l.name || l.league_id)} (${l.platform.toUpperCase()})</option>`).join("")}
@@ -43,9 +51,11 @@ export async function renderSeason(container) {
         </label>
       </div>
       <div class="seg-tabs">
+        <button class="seg ${state.tab === "dashboard" ? "active" : ""}" data-tab="dashboard">Dashboard</button>
         <button class="seg ${state.tab === "startsit" ? "active" : ""}" data-tab="startsit">Start / Sit</button>
         <button class="seg ${state.tab === "waivers" ? "active" : ""}" data-tab="waivers">Waiver Adds</button>
         <button class="seg ${state.tab === "byes" ? "active" : ""}" data-tab="byes">Bye Planner</button>
+        <button class="seg ${state.tab === "playoffs" ? "active" : ""}" data-tab="playoffs">Playoffs</button>
       </div>
     </div>
     <div id="se-body"></div>
@@ -75,6 +85,7 @@ export async function renderSeason(container) {
     state.tab = b.dataset.tab;
     container.querySelectorAll(".seg").forEach((x) => x.classList.toggle("active", x === b));
     container.querySelector("#se-week-wrap").style.display = state.tab === "startsit" ? "" : "none";
+    container.querySelector("#se-controls").style.display = state.tab === "dashboard" ? "none" : "";
     load(container);
   }));
 
@@ -84,6 +95,10 @@ export async function renderSeason(container) {
 
 async function load(container) {
   const body = container.querySelector("#se-body");
+  if (state.tab === "dashboard") {
+    await loadDashboard(container, body);
+    return;
+  }
   if (!state.teamId) { body.innerHTML = ""; return; }
   body.innerHTML = `<div class="loading">Crunching projections&hellip;</div>`;
   try {
@@ -94,6 +109,8 @@ async function load(container) {
       body.innerHTML = renderStartSit(await api.startSit(params));
     } else if (state.tab === "waivers") {
       body.innerHTML = renderWaivers(await api.waivers(base));
+    } else if (state.tab === "playoffs") {
+      body.innerHTML = renderPlayoffOutlook(await api.playoffOutlook(base));
     } else {
       body.innerHTML = renderByes(await api.byePlanner(base));
     }
@@ -102,17 +119,156 @@ async function load(container) {
   }
 }
 
+/* ------------------------------------------------------------ dashboard */
+
+async function loadDashboard(container, body) {
+  if (!state.leagues.length) {
+    body.innerHTML = `<div class="card"><div class="empty-state">
+      Import a league on the <a href="#/import">Import</a> tab to see your at-a-glance dashboard.
+    </div></div>`;
+    return;
+  }
+
+  const myTeams = loadMyTeams();
+  body.innerHTML = `
+    <div class="grid-2">
+      ${state.leagues.map((l) => `
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+            <div>
+              <strong>${escapeHtml(l.name || l.league_id)}</strong>
+              <div class="tag-note">${l.platform.toUpperCase()} · ${l.team_count} teams</div>
+            </div>
+            <select class="dash-team-select" data-league="${escapeHtml(l.key)}" style="max-width:170px;"></select>
+          </div>
+          <div class="dash-body" data-league-body="${escapeHtml(l.key)}" style="margin-top:10px;"><div class="loading">Loading&hellip;</div></div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+
+  // Each card loads (and re-loads) independently — a slow league can't block the rest.
+  state.leagues.forEach((l) => loadDashboardCard(container, l, myTeams));
+}
+
+async function loadDashboardCard(container, l, myTeams) {
+  const cardBody = container.querySelector(`[data-league-body="${l.key}"]`);
+  const teamSelect = container.querySelector(`select[data-league="${l.key}"]`);
+  if (!cardBody || !teamSelect) return;
+
+  let league;
+  try {
+    league = await api.getLeague(l.key);
+  } catch (err) {
+    cardBody.innerHTML = `<div class="error-state">${escapeHtml(err.message || "Couldn't load league")}</div>`;
+    return;
+  }
+  teamSelect.innerHTML = league.teams.map((t) => `<option value="${t.team_id}">${escapeHtml(t.name)}</option>`).join("");
+  let teamId = myTeams[l.key];
+  if (!league.teams.some((t) => t.team_id === teamId)) teamId = league.teams[0]?.team_id || "";
+  teamSelect.value = teamId;
+
+  const renderCard = async (tid) => {
+    if (!tid) { cardBody.innerHTML = `<div class="empty-state">No teams in this league.</div>`; return; }
+    cardBody.innerHTML = `<div class="loading">Loading&hellip;</div>`;
+    try {
+      const base = { league_key: l.key, team_id: tid, format: state.format };
+      const [startSit, waivers, byes] = await Promise.all([
+        api.startSit(base),
+        api.waivers(base),
+        api.byePlanner(base),
+      ]);
+      const injured = startSit.injuries || [];
+      const emptySlots = startSit.empty_slots || [];
+      const topAdd = (waivers.best_adds || [])[0];
+      const worstWeek = byes.worst_week;
+
+      cardBody.innerHTML = `
+        ${injured.length
+          ? `<div class="tag-note" style="color:var(--warning);">⚠ ${injured.map((p) => escapeHtml(p.name)).join(", ")}</div>`
+          : `<div class="tag-note">No injured starters.</div>`}
+        <div class="tag-note">${emptySlots.length ? `Open slots: <strong>${emptySlots.join(", ")}</strong>` : "No open starter slots."}</div>
+        <div class="tag-note">Top waiver add: ${topAdd ? `<strong>${escapeHtml(topAdd.name)}</strong> <span class="delta-chip delta-pos" style="font-size:10.5px;">+${fmtNum(topAdd.upgrade_vbd)} VBD</span>` : "none available"}</div>
+        <div class="tag-note">Worst bye week: ${worstWeek ? `Week ${worstWeek}` : "&mdash;"}</div>
+        <button class="secondary" id="dash-details-${escapeHtml(l.key)}" style="margin-top:8px;">Details &rarr;</button>
+      `;
+      cardBody.querySelector(`#dash-details-${CSS.escape(l.key)}`).addEventListener("click", () => {
+        state.leagueKey = l.key;
+        state.teamId = tid;
+        state.tab = "startsit";
+        renderSeason(container);
+      });
+    } catch (err) {
+      cardBody.innerHTML = `<div class="error-state">${escapeHtml(err.message || "Couldn't load")}</div>`;
+    }
+  };
+
+  teamSelect.addEventListener("change", (e) => {
+    const tid = e.target.value;
+    const map = loadMyTeams();
+    map[l.key] = tid;
+    saveMyTeams(map);
+    renderCard(tid);
+  });
+
+  await renderCard(teamId);
+  const map = loadMyTeams();
+  if (!map[l.key]) { map[l.key] = teamId; saveMyTeams(map); }
+}
+
 function playerRow(p, right) {
+  // Weekly opponent chip: only present on start-sit starters when a
+  // specific week is selected (see season.py start_sit's opponent fields).
+  const oppChip = p.opponent
+    ? ` <span class="delta-chip ${p.opponent_difficulty === "tough" ? "delta-neg" : p.opponent_difficulty === "easy" ? "delta-pos" : "delta-zero"}" style="font-size:10px;padding:2px 7px;">${escapeHtml(p.opponent)}</span>`
+    : "";
   return `
     <div class="player-search-row" data-player-id="${p.id}" data-player-format="${state.format}" style="cursor:pointer;">
       <div class="row-main">
         ${posPill(p.position)}
         <span style="min-width:0;">
-          <strong>${escapeHtml(p.name)}</strong>
+          <strong>${escapeHtml(p.name)}</strong>${oppChip}
           <span class="tag-note">${escapeHtml(p.team || "")}${p.proj_pos_rank ? ` · ${p.position}${p.proj_pos_rank}` : ""}${p.injury_status ? ` · <span class="value-neg">${escapeHtml(p.injury_status)}</span>` : ""}</span>
         </span>
       </div>
       <span style="text-align:right;flex-shrink:0;">${right}</span>
+    </div>`;
+}
+
+function renderPlayoffOutlook(d) {
+  if (!d.schedule_available) {
+    return `<div class="card"><div class="empty-state">Playoff schedule data isn't available right now — check back once the NFL schedule loads.</div></div>`;
+  }
+  const warn = d.tough_starters.length ? `
+    <div class="verdict-banner verdict-lopsided">
+      ⚠️ Tough playoff schedules (weeks 15&ndash;17) among your starters:
+      ${d.tough_starters.map((p) => `${escapeHtml(p.name)} (${"★".repeat(p.playoff_sos.stars)}${"☆".repeat(5 - p.playoff_sos.stars)})`).join(", ")}
+    </div>` : "";
+
+  const rows = d.players.map((p) => {
+    const sos = p.playoff_sos;
+    const starsHtml = sos ? `${"★".repeat(sos.stars)}${"☆".repeat(5 - sos.stars)}` : "&mdash;";
+    const opps = sos ? sos.opponents.map((o, i) => `Wk${15 + i}: ${o ? escapeHtml(o) : "BYE"}`).join(", ") : "no schedule data";
+    const starClass = sos && sos.stars <= 2 ? "value-neg" : sos && sos.stars >= 4 ? "value-pos" : "";
+    return `
+      <div class="player-search-row">
+        <div class="row-main">
+          ${posPill(p.position)}
+          <span style="min-width:0;">
+            <strong>${escapeHtml(p.name)}</strong> <span class="tag-note">${p.is_starter ? "starter" : "bench"}</span>
+            <div class="tag-note">${escapeHtml(p.team || "")} · ${opps}</div>
+          </span>
+        </div>
+        <span class="${starClass}" style="flex-shrink:0;">${starsHtml}</span>
+      </div>`;
+  }).join("");
+
+  return `
+    ${warn}
+    <div class="card">
+      <h2>Playoff Schedule Outlook <span class="tag-note" style="font-weight:400;">weeks 15&ndash;17</span></h2>
+      <p class="tag-note">Roster sorted by projected points. Stars rate that player's NFL team playoff schedule (5 = easiest).</p>
+      ${rows}
     </div>`;
 }
 

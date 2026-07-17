@@ -16,7 +16,6 @@ IMG_DIR = CACHE_DIR / "img"
 IMG_DIR.mkdir(parents=True, exist_ok=True)
 
 _SAFE = re.compile(r"^[A-Za-z0-9_]{1,16}$")
-_MISS = object()
 _HEADERS = {"Cache-Control": "public, max-age=86400"}
 
 

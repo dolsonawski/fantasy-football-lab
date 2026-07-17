@@ -131,7 +131,7 @@ function renderSleeperPanel(container) {
 
 function renderResults(container, data) {
   const target = container.querySelector("#roster-results");
-  const gradeClass = data.grade.startsWith("A") ? "" : data.grade.startsWith("B") ? "" : "grade-D";
+  const gradeClass = data.grade.startsWith("F") ? "grade-F" : (data.grade.startsWith("C") || data.grade.startsWith("D")) ? "grade-D" : "";
 
   const slotRowHtml = (slot, p) => `
     <div class="slot-row">

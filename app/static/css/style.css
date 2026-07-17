@@ -170,53 +170,7 @@ header.topbar { position: sticky; }
 }
 @media (max-width: 720px) { .account-name { display: none; } }
 
-/* sign-in gate */
-body.auth-mode {
-  background-image:
-    radial-gradient(900px 500px at 15% 0%, rgba(47, 215, 133, 0.10) 0%, transparent 55%),
-    radial-gradient(1000px 600px at 90% 100%, rgba(98, 160, 255, 0.10) 0%, transparent 55%),
-    radial-gradient(1200px 700px at 50% -10%, #12202b 0%, #0b0e14 60%);
-}
-main#app:has(.auth-hero) { max-width: 1120px; }
-
-.auth-hero {
-  min-height: 88vh;
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  align-items: center;
-  gap: 48px;
-  padding: 32px 8px;
-}
-.auth-pitch { padding: 8px 8px 8px 4px; }
-.auth-logo {
-  display: inline-flex; align-items: center; gap: 9px;
-  font-weight: 800; font-size: 17px; margin-bottom: 22px;
-}
-.auth-logo .dot {
-  width: 12px; height: 12px; border-radius: 4px; font-size: 0;
-  background: linear-gradient(135deg, var(--accent), #17a05e);
-  box-shadow: 0 0 14px var(--accent-glow); display: inline-block;
-}
-.auth-headline {
-  font-size: 40px; line-height: 1.08; font-weight: 800;
-  letter-spacing: -0.03em; margin: 0 0 14px;
-}
-.auth-headline .accent {
-  background: linear-gradient(120deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.auth-sub { color: var(--text-dim); font-size: 15.5px; max-width: 460px; margin: 0 0 26px; }
-.auth-features { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px; }
-.auth-features li { display: flex; gap: 13px; align-items: flex-start; }
-.af-icon {
-  flex-shrink: 0; width: 38px; height: 38px; border-radius: 11px;
-  display: inline-flex; align-items: center; justify-content: center; font-size: 19px;
-  background: var(--surface-2); border: 1px solid var(--border-light);
-}
-.auth-features strong { display: block; font-size: 14.5px; margin-bottom: 1px; }
-.af-desc { display: block; color: var(--text-faint); font-size: 12.5px; line-height: 1.45; }
-
-.auth-panel { display: flex; justify-content: center; }
+/* "server unreachable" fallback screen */
 .auth-card {
   width: 100%;
   max-width: 380px;
@@ -227,22 +181,10 @@ main#app:has(.auth-hero) { max-width: 1120px; }
   box-shadow: var(--shadow);
 }
 .auth-card input { width: 100%; }
-/* Used by the "server unreachable" fallback screen */
 .auth-shell { min-height: 82vh; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
 .auth-shell .auth-card { text-align: center; }
 .auth-brand { font-weight: 800; font-size: 20px; display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 14px; }
 .auth-brand .dot { width: 12px; height: 12px; border-radius: 4px; font-size: 0; background: linear-gradient(135deg, var(--accent), #17a05e); display: inline-block; }
-
-@media (max-width: 900px) {
-  .auth-hero { grid-template-columns: 1fr; gap: 26px; min-height: 0; padding-top: 24px; }
-  .auth-pitch { order: 2; }
-  .auth-panel { order: 1; }
-  .auth-headline { font-size: 30px; }
-  .auth-features { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-}
-@media (max-width: 560px) {
-  .auth-features { grid-template-columns: 1fr; }
-}
 
 h1 { font-size: 24px; margin: 0 0 4px; letter-spacing: -0.02em; font-weight: 800; }
 h2 { font-size: 16px; margin: 0 0 12px; font-weight: 700; letter-spacing: -0.01em; }
@@ -721,9 +663,31 @@ main#app { padding-left: max(28px, env(safe-area-inset-left)); padding-right: ma
 
   /* Suggestion + value cards go full width. */
   .pos-value-strip { grid-template-columns: 1fr; }
-  .avail-grid { grid-template-columns: 1fr; max-height: none; }
+  .avail-grid { grid-template-columns: 1fr; max-height: 60vh; overflow-y: auto; }
 
   footer.app-footer { padding: 20px 16px 26px; font-size: 11px; }
+
+  /* Draft room: segmented mobile tabs, one pane visible at a time. */
+  .room-mobile-tabs { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 14px; width: 100%; }
+  .room-mobile-tabs::-webkit-scrollbar { display: none; }
+  .room-mobile-tabs .seg { white-space: nowrap; }
+  .room-pane { display: none; }
+  .room-pane.active { display: block; }
+
+  /* Sticky draft-room status strip: stays visible below the topbar. */
+  .room-header {
+    position: sticky;
+    top: var(--topbar-h, 96px);
+    z-index: 5;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+  }
+
+  /* Rankings: drop the Last-Yr Rank column, cap table scroll height. */
+  .col-hide-mobile { display: none; }
+  .table-wrap { max-height: 65vh; }
 }
 
 @media (max-width: 420px) {
@@ -744,3 +708,39 @@ main#app { padding-left: max(28px, env(safe-area-inset-left)); padding-right: ma
 .seg-tabs { display: inline-flex; gap: 4px; background: var(--surface-2); padding: 4px; border-radius: 10px; border: 1px solid var(--border); }
 .seg { background: transparent; color: var(--text-dim); box-shadow: none; padding: 7px 16px; font-size: 13px; }
 .seg.active { background: linear-gradient(135deg, var(--accent-dim), #0f5c38); color: #eafff4; }
+
+/* draft-room mobile tab bar: mobile-only (the ≤760px query styles it; this
+   hides it at desktop widths and must stay after the .seg-tabs base rule). */
+@media (min-width: 761px) {
+  .room-mobile-tabs { display: none; }
+}
+
+/* collapsible full draft board (report card) */
+.full-board-details summary { cursor: pointer; font-weight: 700; font-size: 16px; letter-spacing: -0.01em; }
+.full-board-details summary::marker { color: var(--accent); }
+
+/* floating back-to-top button, mobile only */
+#back-to-top {
+  display: none;
+  position: fixed;
+  right: 16px;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  color: var(--text-dim);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow);
+  font-size: 19px;
+  line-height: 1;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+@media (max-width: 760px) {
+  #back-to-top.visible { display: flex; opacity: 1; pointer-events: auto; }
+}

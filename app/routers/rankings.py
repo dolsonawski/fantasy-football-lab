@@ -7,8 +7,9 @@ rank, and the deltas between them — the deltas are where values live.
 """
 from __future__ import annotations
 
-from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile
+from fastapi import APIRouter, Depends, File, Form, Header, HTTPException, Query, UploadFile
 
+from app.deps import current_user
 from app.services import dataset, rankings_import, rankings_store, scoring
 
 router = APIRouter(prefix="/api/rankings", tags=["rankings"])
@@ -17,13 +18,16 @@ MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 
 
 @router.get("/sets")
-async def list_ranking_sets():
-    return {"sets": await rankings_store.list_sets()}
+async def list_ranking_sets(x_ffl_uid: str | None = Header(default=None)):
+    # Soft auth: unauthenticated callers still get built-in + ownerless sets,
+    # so tools without the header don't 400. A valid uid additionally filters
+    # imported sets to that owner.
+    return {"sets": await rankings_store.list_sets(x_ffl_uid)}
 
 
 @router.delete("/sets/{set_id}")
-async def delete_ranking_set(set_id: str):
-    if not rankings_store.delete_imported_set(set_id):
+async def delete_ranking_set(set_id: str, user: dict = Depends(current_user)):
+    if not rankings_store.delete_imported_set(set_id, user["id"]):
         raise HTTPException(404, "imported set not found")
     return {"deleted": set_id}
 
@@ -49,7 +53,8 @@ async def upload_ecr(file: UploadFile = File(...)):
 
 
 @router.post("/import")
-async def import_rankings(file: UploadFile = File(...), name: str = Form(default="")):
+async def import_rankings(file: UploadFile = File(...), name: str = Form(default=""),
+                          user: dict = Depends(current_user)):
     content = await file.read()
     if len(content) > MAX_UPLOAD_BYTES:
         raise HTTPException(400, "file too large (10 MB max)")
@@ -59,7 +64,7 @@ async def import_rankings(file: UploadFile = File(...), name: str = Form(default
         raise HTTPException(400, str(e))
 
     set_name = name.strip() or (file.filename or "Imported rankings")
-    set_id = rankings_store.save_imported_set(set_name, result["matched"], file.filename or "")
+    set_id = rankings_store.save_imported_set(set_name, result["matched"], file.filename or "", user["id"])
     return {
         "set_id": set_id,
         "name": set_name,

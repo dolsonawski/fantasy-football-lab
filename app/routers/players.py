@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Query
 
-from app.services import dataset, espn_client, rankings_store, roster_rules, sleeper_client
+from app.services import dataset, espn_client, rankings_store, roster_rules, schedule_client, sleeper_client
 
 router = APIRouter(prefix="/api/players", tags=["players"])
 
@@ -68,6 +68,17 @@ async def player_detail(player_id: str, format: str = Query(default="ppr", patte
     except Exception:
         pass
 
+    # Playoff (fantasy weeks 15-17) strength of schedule for this player's
+    # NFL team, 1-5 stars (5 = easiest). None when the ESPN schedule fetch
+    # failed or the team isn't recognized — the frontend just omits the row.
+    playoff_sos = None
+    team = (rec or {}).get("team") or info.get("team")
+    try:
+        if team and team != "FA":
+            playoff_sos = (await schedule_client.playoff_sos()).get(team)
+    except Exception:
+        playoff_sos = None
+
     try:
         news = await espn_client.player_news(name)
     except Exception:
@@ -116,6 +127,7 @@ async def player_detail(player_id: str, format: str = Query(default="ppr", patte
         "rookie": (rec or {}).get("rookie"),
         "bye": (rec or {}).get("bye"),
         "sos": sos,
+        "playoff_sos": playoff_sos,
         "format": format,
         "proj_points": (rec or {}).get("proj_points"),
         "points": (rec or {}).get("points"),
@@ -127,12 +139,3 @@ async def player_detail(player_id: str, format: str = Query(default="ppr", patte
         "social": social,
         "links": links,
     }
-
-
-@router.get("/{player_id}")
-async def get_player(player_id: str):
-    players = await dataset.build_dataset()
-    for p in players:
-        if p["id"] == player_id:
-            return p
-    return {"error": "not_found"}

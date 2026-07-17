@@ -101,7 +101,7 @@ def _load_ecr() -> dict:
     return json.loads(ECR_FILE.read_text(encoding="utf-8"))
 
 
-async def list_sets() -> list[dict]:
+async def list_sets(user_id: str | None = None) -> list[dict]:
     sets = []
     if ecr_available():
         meta = _load_ecr()
@@ -146,6 +146,11 @@ async def list_sets() -> list[dict]:
     for path in sorted(DATA_DIR.glob("*.json")):
         try:
             meta = json.loads(path.read_text(encoding="utf-8"))
+            owner_id = meta.get("owner_id")
+            # Legacy sets with no owner_id stay visible to everyone; owned
+            # sets are only shown to their owner.
+            if owner_id and owner_id != user_id:
+                continue
             sets.append(
                 {
                     "id": meta["id"],
@@ -154,6 +159,7 @@ async def list_sets() -> list[dict]:
                     "format": meta.get("format"),
                     "player_count": len(meta.get("ranks", [])),
                     "created_at": meta.get("created_at"),
+                    "owner_id": owner_id,
                 }
             )
         except (json.JSONDecodeError, KeyError, OSError):
@@ -238,7 +244,7 @@ async def get_set_entries(set_id: str) -> list[dict] | None:
     return data["ranks"]
 
 
-def save_imported_set(name: str, entries: list[dict], source_file: str) -> str:
+def save_imported_set(name: str, entries: list[dict], source_file: str, owner_id: str | None = None) -> str:
     """entries: [{player_id, rank, name}] already matched/deduped."""
     set_id = "imp_" + uuid.uuid4().hex[:8]
     payload = {
@@ -246,18 +252,27 @@ def save_imported_set(name: str, entries: list[dict], source_file: str) -> str:
         "name": name,
         "source_file": source_file,
         "created_at": int(time.time()),
+        "owner_id": owner_id,
         "ranks": entries,
     }
     (DATA_DIR / f"{set_id}.json").write_text(json.dumps(payload, indent=1), encoding="utf-8")
     return set_id
 
 
-def delete_imported_set(set_id: str) -> bool:
+def delete_imported_set(set_id: str, user_id: str | None = None) -> bool:
     path = DATA_DIR / f"{set_id}.json"
-    if set_id.startswith("imp_") and path.exists():
-        path.unlink()
-        return True
-    return False
+    if not (set_id.startswith("imp_") and path.exists()):
+        return False
+    try:
+        meta = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        meta = {}
+    owner_id = meta.get("owner_id")
+    # Legacy ownerless sets may be deleted by anyone; owned sets require a match.
+    if owner_id and owner_id != user_id:
+        return False
+    path.unlink()
+    return True
 
 
 def preferred_set_for_format(fmt: str) -> str:

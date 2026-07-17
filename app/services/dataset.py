@@ -150,7 +150,9 @@ async def build_dataset(force_refresh: bool = False) -> list[dict]:
                 "team": info.get("team") or "FA",
                 "age": info.get("age"),
                 "years_exp": info.get("years_exp"),
-                "rookie": not player_stats and (info.get("years_exp") or 0) == 0,
+                # Sleeper's stats dump includes zero-point stub entries for
+                # rookies, so key off scored points rather than record presence.
+                "rookie": (info.get("years_exp") or 0) == 0 and all(v <= 0 for v in points.values()),
                 "injury_status": info.get("injury_status"),
                 "status": info.get("status"),
                 "market_rank": _market_rank(info),

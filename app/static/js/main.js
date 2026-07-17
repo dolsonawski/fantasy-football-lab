@@ -102,6 +102,19 @@ function showUnreachable(retry) {
   document.getElementById("retry-btn").addEventListener("click", retry);
 }
 
+function setupBackToTop() {
+  if (document.getElementById("back-to-top")) return;
+  const btn = document.createElement("button");
+  btn.id = "back-to-top";
+  btn.setAttribute("aria-label", "Back to top");
+  btn.textContent = "↑";
+  document.body.appendChild(btn);
+  btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  window.addEventListener("scroll", () => {
+    btn.classList.toggle("visible", window.scrollY > 600);
+  }, { passive: true });
+}
+
 function mountApp(meta) {
   document.querySelector("header.topbar").style.display = "";
   renderIdentityChip();
@@ -112,6 +125,7 @@ function mountApp(meta) {
     : "";
 
   initPlayerDetail();
+  setupBackToTop();
   startRouter();
 }
 

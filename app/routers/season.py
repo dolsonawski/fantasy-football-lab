@@ -56,3 +56,17 @@ async def waivers(
         return await season.waiver_targets(league, team_id, format)
     except ValueError as e:
         raise HTTPException(400, str(e))
+
+
+@router.get("/playoff-outlook")
+async def playoff_outlook(
+    league_key: str = Query(...),
+    team_id: str = Query(...),
+    format: str = Query(default="ppr", pattern="^(standard|half_ppr|ppr)$"),
+    user: dict = Depends(current_user),
+):
+    league = _league(user, league_key)
+    try:
+        return await season.playoff_outlook(league, team_id, format)
+    except ValueError as e:
+        raise HTTPException(400, str(e))

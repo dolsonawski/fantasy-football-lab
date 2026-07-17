@@ -21,12 +21,6 @@ export function signed(n, digits = 1) {
   return `<span class="${cls}">${sign}${v.toFixed(digits)}</span>`;
 }
 
-export function el(html) {
-  const template = document.createElement("template");
-  template.innerHTML = html.trim();
-  return template.content.firstElementChild;
-}
-
 export function debounce(fn, wait = 250) {
   let t;
   return (...args) => {

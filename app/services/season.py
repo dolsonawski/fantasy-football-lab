@@ -4,7 +4,7 @@ bye-week planner.
 """
 from __future__ import annotations
 
-from app.services import dataset, roster_rules, sleeper_client
+from app.services import dataset, roster_rules, schedule_client, sleeper_client
 
 _WEEKLY_KEYS = {"standard": "pts_std", "half_ppr": "pts_half_ppr", "ppr": "pts_ppr"}
 
@@ -59,6 +59,22 @@ async def start_sit(league: dict, team_id: str, fmt: str, config: dict | None = 
     ]
     empty_slots = [slot for slot, p in lineup["starters"].items() if p is None]
     bench = [_slim(p, fmt) for p in lineup["bench"] + lineup["overflow"]]
+
+    # Weekly opponent chips: only meaningful once a specific week's
+    # projections are in play. Best-effort — a schedule-fetch failure just
+    # means starters render without an opponent tag.
+    if week and weekly_used:
+        try:
+            for s in starters:
+                opp = await schedule_client.team_week_opponent(s.get("team"), week)
+                if opp:
+                    s["opponent"] = f"{'vs' if opp['home'] else '@'} {opp['opponent']}"
+                    s["opponent_difficulty"] = await schedule_client.matchup_difficulty(opp["opponent"])
+                else:
+                    s["opponent"] = None
+                    s["opponent_difficulty"] = None
+        except Exception:
+            pass
 
     starter_ids = {s["id"] for s in starters}
     injuries = [
@@ -141,6 +157,46 @@ async def bye_planner(league: dict, team_id: str, fmt: str) -> dict:
         "weeks": out_weeks,
         "unknown_bye": unknown,
         "worst_week": max(out_weeks, key=lambda w: w["starters_out"])["week"] if out_weeks else None,
+    }
+
+
+async def playoff_outlook(league: dict, team_id: str, fmt: str, config: dict | None = None) -> dict:
+    """Fantasy-playoff-week (15-17) outlook for a team's roster: each
+    player's team playoff schedule strength (1-5 stars, 5=easiest) plus a
+    warning banner for starters facing a tough (1-2 star) playoff slate."""
+    players = await dataset.build_dataset()
+    by_id = _by_id(players)
+    team = _team(league, team_id)
+    roster = [by_id[pid] for pid in team["players"] if pid in by_id]
+
+    try:
+        sos = await schedule_client.playoff_sos()
+    except Exception:
+        sos = {}
+
+    lineup = roster_rules.assign_lineup(roster, fmt, config)
+    starter_ids = {p["id"] for p in lineup["starters"].values() if p is not None}
+
+    roster_sorted = sorted(roster, key=lambda p: roster_rules.player_value(p, fmt), reverse=True)
+    rows = []
+    tough_starters = []
+    for p in roster_sorted:
+        team_sos = sos.get(p.get("team")) if p.get("team") else None
+        entry = _slim(p, fmt) | {
+            "is_starter": p["id"] in starter_ids,
+            "playoff_sos": team_sos,
+        }
+        rows.append(entry)
+        if team_sos and entry["is_starter"] and team_sos["stars"] <= 2:
+            tough_starters.append(entry)
+
+    return {
+        "team_id": team_id,
+        "team_name": team["name"],
+        "format": fmt,
+        "players": rows,
+        "tough_starters": tough_starters,
+        "schedule_available": bool(sos),
     }
 
 

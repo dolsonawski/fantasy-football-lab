@@ -24,6 +24,7 @@ const state = {
   rows: [],
   sets: [],
   sources: [],         // [{id, name}] — format-agnostic
+  rookiesOnly: false,
 };
 
 const FAMILY_RE = /^(adp|sleeper_adp|sleeper_dynasty|espn_rank|espn_adp|proj|computed)_(standard|half_ppr|ppr)$/;
@@ -116,6 +117,10 @@ export async function renderRankings(container) {
             ${POSITIONS.map((p) => `<option value="${p}" ${p === state.position ? "selected" : ""}>${p}</option>`).join("")}
           </select>
         </label>
+        <label style="flex-direction:row;align-items:center;gap:8px;">
+          <input type="checkbox" id="rookies-only-check" ${state.rookiesOnly ? "checked" : ""}>
+          Rookies only
+        </label>
       </div>
       <div id="rankings-table"><div class="loading">Loading&hellip;</div></div>
     </div>
@@ -136,6 +141,10 @@ export async function renderRankings(container) {
   container.querySelector("#position-select").addEventListener("change", (e) => {
     state.position = e.target.value;
     loadTable(container);
+  });
+  container.querySelector("#rookies-only-check").addEventListener("change", (e) => {
+    state.rookiesOnly = e.target.checked;
+    renderTable(container);
   });
 
   await loadTable(container);
@@ -175,9 +184,9 @@ function rowTint(score) {
   return "";
 }
 
-function summaryStrip(nameA, nameB) {
+function summaryStrip(nameA, nameB, rows) {
   // Draftable pool only, so deep-list noise can't crowd out real edges.
-  const eligible = state.rows.filter((r) => r.value_score !== null && r.value_score !== undefined && r.rank_a && r.rank_a <= 180);
+  const eligible = rows.filter((r) => r.value_score !== null && r.value_score !== undefined && r.rank_a && r.rank_a <= 180);
   const best = [...eligible].sort((a, b) => b.value_score - a.value_score).slice(0, 5).filter((r) => r.value_score > 0);
   const worst = [...eligible].sort((a, b) => a.value_score - b.value_score).slice(0, 5).filter((r) => r.value_score < 0);
 
@@ -212,8 +221,9 @@ function summaryStrip(nameA, nameB) {
 function renderTable(container) {
   const target = container.querySelector("#rankings-table");
   sortRows();
+  const rows = state.rookiesOnly ? state.rows.filter((r) => r.rookie) : state.rows;
 
-  if (!state.rows.length) {
+  if (!rows.length) {
     target.innerHTML = `<div class="empty-state">No players match this filter.</div>`;
     return;
   }
@@ -227,10 +237,11 @@ function renderTable(container) {
     if (c.key === "rank_a") label = `${nameA} Rank`;
     if (c.key === "rank_b") label = `${nameB} Rank`;
     if (c.key === "proj_points") label = `Proj ${formatLabel(state.format)} Pts`;
-    return `<th data-key="${c.key}">${label} ${arrow}</th>`;
+    const cls = c.key === "perf_rank" ? ' class="col-hide-mobile"' : "";
+    return `<th data-key="${c.key}"${cls}>${label} ${arrow}</th>`;
   }).join("");
 
-  const rows = state.rows.map((p) => `
+  const rowsHtml = rows.map((p) => `
     <tr class="${rowTint(p.value_score)}">
       <td style="font-weight:800;color:var(--text-dim);">${p.rank_a ?? "&mdash;"}</td>
       <td>${playerCell(p, `${escapeHtml(p.team)}${p.rookie ? " · <span style='color:var(--warning)'>Rookie</span>" : ""}`)}</td>
@@ -238,16 +249,16 @@ function renderTable(container) {
       <td style="font-weight:700;">${p.rank_b ?? "&mdash;"}</td>
       <td>${valueChip(p.value_score, p.delta)}</td>
       <td>${fmtNum(p.proj_points?.[state.format])}</td>
-      <td>${p.perf_rank ? "#" + p.perf_rank : "&mdash;"}</td>
+      <td class="col-hide-mobile">${p.perf_rank ? "#" + p.perf_rank : "&mdash;"}</td>
     </tr>
   `).join("");
 
   target.innerHTML = `
-    ${summaryStrip(nameA, nameB)}
+    ${summaryStrip(nameA, nameB, rows)}
     <div class="table-wrap">
       <table>
         <thead><tr>${header}</tr></thead>
-        <tbody>${rows}</tbody>
+        <tbody>${rowsHtml}</tbody>
       </table>
     </div>
     <p class="tag-note">

@@ -64,6 +64,11 @@ export async function openPlayerDetail(id, format = currentFormat) {
         </a>`).join("")
     : `<p class="tag-note">No recent national headlines mention ${escapeHtml(d.name)}. Use the links below for the latest reports.</p>`;
 
+  const playoffSos = d.playoff_sos
+    ? `<div class="tag-note">Playoff SOS (Wks 15&ndash;17) ${"★".repeat(d.playoff_sos.stars)}${"☆".repeat(5 - d.playoff_sos.stars)}
+        &mdash; vs ${d.playoff_sos.opponents.map((o, i) => `Wk${15 + i}: ${o ? escapeHtml(o) : "BYE"}`).join(", ")}</div>`
+    : "";
+
   const linksHtml = d.links.map((l) =>
     `<a class="pd-link" href="${escapeHtml(l.url)}" target="_blank" rel="noopener">${escapeHtml(l.label)} ↗</a>`).join("");
 
@@ -87,6 +92,7 @@ export async function openPlayerDetail(id, format = currentFormat) {
         <div>
           <div class="pd-name">${escapeHtml(d.name)}</div>
           <div class="tag-note">${posPill(d.position || "?")} ${escapeHtml(d.team || "")}${d.bye ? ` · Bye ${d.bye}` : ""}${d.sos ? ` · SOS ${"★".repeat(d.sos)}${"☆".repeat(5 - d.sos)}` : ""}${d.injury_status ? ` · <span class="value-neg">${escapeHtml(d.injury_status)}</span>` : ""}${d.rookie ? " · Rookie" : ""}</div>
+          ${playoffSos}
         </div>
       </div>
       <button class="pd-x" aria-label="Close">&times;</button>

@@ -1,7 +1,7 @@
 // Service worker: cache the app shell for instant repeat loads + offline
 // launch. API and image requests always go to the network (never cached),
 // since fantasy data is live and per-user.
-const CACHE = "ffl-shell-v5";
+const CACHE = "ffl-shell-v6";
 const SHELL = [
   "/",
   "/css/style.css",
