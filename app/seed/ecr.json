@@ -1,0 +1,4382 @@
+{
+ "name": "FantasyPros ECR",
+ "source_file": "FantasyPros_2026_Draft_ALL_Rankings.csv",
+ "updated_at": 1783962829,
+ "ranks": [
+  {
+   "player_id": "9509",
+   "rank": 1,
+   "name": "Bijan Robinson",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "9221",
+   "rank": 2,
+   "name": "Jahmyr Gibbs",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "7564",
+   "rank": 3,
+   "name": "Ja'Marr Chase",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "9493",
+   "rank": 4,
+   "name": "Puka Nacua",
+   "sos": 1,
+   "bye": 11
+  },
+  {
+   "player_id": "9488",
+   "rank": 5,
+   "name": "Jaxon Smith-Njigba",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "7547",
+   "rank": 6,
+   "name": "Amon-Ra St. Brown",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "4034",
+   "rank": 7,
+   "name": "Christian McCaffrey",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "6813",
+   "rank": 8,
+   "name": "Jonathan Taylor",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "6786",
+   "rank": 9,
+   "name": "CeeDee Lamb",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "6794",
+   "rank": 10,
+   "name": "Justin Jefferson",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "8138",
+   "rank": 11,
+   "name": "James Cook III",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "12527",
+   "rank": 12,
+   "name": "Ashton Jeanty",
+   "sos": 2,
+   "bye": 13
+  },
+  {
+   "player_id": "8112",
+   "rank": 13,
+   "name": "Drake London",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "9226",
+   "rank": 14,
+   "name": "De'Von Achane",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "7569",
+   "rank": 15,
+   "name": "Nico Collins",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "4866",
+   "rank": 16,
+   "name": "Saquon Barkley",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "11604",
+   "rank": 17,
+   "name": "Brock Bowers",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "9224",
+   "rank": 18,
+   "name": "Chase Brown",
+   "sos": 2,
+   "bye": 6
+  },
+  {
+   "player_id": "5859",
+   "rank": 19,
+   "name": "A.J. Brown",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "12507",
+   "rank": 20,
+   "name": "Omarion Hampton",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "8137",
+   "rank": 21,
+   "name": "George Pickens",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "8130",
+   "rank": 22,
+   "name": "Trey McBride",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "3198",
+   "rank": 23,
+   "name": "Derrick Henry",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "8151",
+   "rank": 24,
+   "name": "Kenneth Walker III",
+   "sos": 3,
+   "bye": 5
+  },
+  {
+   "player_id": "8144",
+   "rank": 25,
+   "name": "Chris Olave",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "4984",
+   "rank": 26,
+   "name": "Josh Allen",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "10229",
+   "rank": 27,
+   "name": "Rashee Rice",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "7525",
+   "rank": 28,
+   "name": "DeVonta Smith",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "13287",
+   "rank": 29,
+   "name": "Jeremiyah Love",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "6801",
+   "rank": 30,
+   "name": "Tee Higgins",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "12526",
+   "rank": 31,
+   "name": "Tetairoa McMillan",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "8150",
+   "rank": 32,
+   "name": "Kyren Williams",
+   "sos": 5,
+   "bye": 11
+  },
+  {
+   "player_id": "9997",
+   "rank": 33,
+   "name": "Zay Flowers",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "4881",
+   "rank": 34,
+   "name": "Lamar Jackson",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "11564",
+   "rank": 35,
+   "name": "Drake Maye",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "5850",
+   "rank": 36,
+   "name": "Josh Jacobs",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "8155",
+   "rank": 37,
+   "name": "Breece Hall",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "11632",
+   "rank": 38,
+   "name": "Malik Nabers",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "8146",
+   "rank": 39,
+   "name": "Garrett Wilson",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "12517",
+   "rank": 40,
+   "name": "Colston Loveland",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "11635",
+   "rank": 41,
+   "name": "Ladd McConkey",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "7588",
+   "rank": 42,
+   "name": "Javonte Williams",
+   "sos": 4,
+   "bye": 14
+  },
+  {
+   "player_id": "12514",
+   "rank": 43,
+   "name": "Emeka Egbuka",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "7526",
+   "rank": 44,
+   "name": "Jaylen Waddle",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "7543",
+   "rank": 45,
+   "name": "Travis Etienne Jr.",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "6770",
+   "rank": 46,
+   "name": "Joe Burrow",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "5927",
+   "rank": 47,
+   "name": "Terry McLaurin",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "12519",
+   "rank": 48,
+   "name": "Luther Burden III",
+   "sos": 3,
+   "bye": 10
+  },
+  {
+   "player_id": "2133",
+   "rank": 49,
+   "name": "Davante Adams",
+   "sos": 1,
+   "bye": 11
+  },
+  {
+   "player_id": "8148",
+   "rank": 50,
+   "name": "Jameson Williams",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "12481",
+   "rank": 51,
+   "name": "Cam Skattebo",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "11584",
+   "rank": 52,
+   "name": "Bucky Irving",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "6790",
+   "rank": 53,
+   "name": "D'Andre Swift",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "12512",
+   "rank": 54,
+   "name": "Quinshon Judkins",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "2216",
+   "rank": 55,
+   "name": "Mike Evans",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "12518",
+   "rank": 56,
+   "name": "Tyler Warren",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "12529",
+   "rank": 57,
+   "name": "TreVeyon Henderson",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "8167",
+   "rank": 58,
+   "name": "Christian Watson",
+   "sos": 5,
+   "bye": 11
+  },
+  {
+   "player_id": "11566",
+   "rank": 59,
+   "name": "Jayden Daniels",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "6904",
+   "rank": 60,
+   "name": "Jalen Hurts",
+   "sos": 5,
+   "bye": 10
+  },
+  {
+   "player_id": "5892",
+   "rank": 61,
+   "name": "David Montgomery",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "4983",
+   "rank": 62,
+   "name": "DJ Moore",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "11620",
+   "rank": 63,
+   "name": "Rome Odunze",
+   "sos": 3,
+   "bye": 10
+  },
+  {
+   "player_id": "12490",
+   "rank": 64,
+   "name": "Bhayshul Tuten",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "9484",
+   "rank": 65,
+   "name": "Tucker Kraft",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "11560",
+   "rank": 66,
+   "name": "Caleb Williams",
+   "sos": 3,
+   "bye": 10
+  },
+  {
+   "player_id": "13286",
+   "rank": 67,
+   "name": "Jadarian Price",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "13279",
+   "rank": 68,
+   "name": "Carnell Tate",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "6797",
+   "rank": 69,
+   "name": "Justin Herbert",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "8228",
+   "rank": 70,
+   "name": "Jaylen Warren",
+   "sos": 2,
+   "bye": 9
+  },
+  {
+   "player_id": "11628",
+   "rank": 71,
+   "name": "Marvin Harrison Jr.",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "8142",
+   "rank": 72,
+   "name": "Alec Pierce",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "7523",
+   "rank": 73,
+   "name": "Trevor Lawrence",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "5846",
+   "rank": 74,
+   "name": "DK Metcalf",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "7611",
+   "rank": 75,
+   "name": "Rhamondre Stevenson",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "7594",
+   "rank": 76,
+   "name": "Chuba Hubbard",
+   "sos": 1,
+   "bye": 5
+  },
+  {
+   "player_id": "5967",
+   "rank": 77,
+   "name": "Tony Pollard",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "12506",
+   "rank": 78,
+   "name": "Harold Fannin Jr.",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "11631",
+   "rank": 79,
+   "name": "Brian Thomas Jr.",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "5045",
+   "rank": 80,
+   "name": "Courtland Sutton",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "7021",
+   "rank": 81,
+   "name": "Rico Dowdle",
+   "sos": 2,
+   "bye": 9
+  },
+  {
+   "player_id": "3294",
+   "rank": 82,
+   "name": "Dak Prescott",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "7553",
+   "rank": 83,
+   "name": "Kyle Pitts Sr.",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "10859",
+   "rank": 84,
+   "name": "Sam LaPorta",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "12508",
+   "rank": 85,
+   "name": "Jaxson Dart",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "4037",
+   "rank": 86,
+   "name": "Chris Godwin Jr.",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "13281",
+   "rank": 87,
+   "name": "Jordyn Tyson",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "12489",
+   "rank": 88,
+   "name": "RJ Harvey",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "9487",
+   "rank": 89,
+   "name": "Parker Washington",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "12534",
+   "rank": 90,
+   "name": "Kyle Monangai",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "8183",
+   "rank": 91,
+   "name": "Brock Purdy",
+   "sos": 1,
+   "bye": 8
+  },
+  {
+   "player_id": "10232",
+   "rank": 92,
+   "name": "Michael Wilson",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "13294",
+   "rank": 93,
+   "name": "Makai Lemon",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "11586",
+   "rank": 94,
+   "name": "Blake Corum",
+   "sos": 5,
+   "bye": 11
+  },
+  {
+   "player_id": "6819",
+   "rank": 95,
+   "name": "Michael Pittman Jr.",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "6806",
+   "rank": 96,
+   "name": "J.K. Dobbins",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "4046",
+   "rank": 97,
+   "name": "Patrick Mahomes II",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "5947",
+   "rank": 98,
+   "name": "Jakobi Meyers",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "11563",
+   "rank": 99,
+   "name": "Bo Nix",
+   "sos": 3,
+   "bye": 10
+  },
+  {
+   "player_id": "9754",
+   "rank": 100,
+   "name": "Quentin Johnston",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "7567",
+   "rank": 101,
+   "name": "Kenny Gainwell",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "1466",
+   "rank": 102,
+   "name": "Travis Kelce",
+   "sos": 4,
+   "bye": 5
+  },
+  {
+   "player_id": "421",
+   "rank": 103,
+   "name": "Matthew Stafford",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "9756",
+   "rank": 104,
+   "name": "Jordan Addison",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "11638",
+   "rank": 105,
+   "name": "Ricky Pearsall",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "8126",
+   "rank": 106,
+   "name": "Wan'Dale Robinson",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "4199",
+   "rank": 107,
+   "name": "Aaron Jones Sr.",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "8136",
+   "rank": 108,
+   "name": "Rachaad White",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "10236",
+   "rank": 109,
+   "name": "Dalton Kincaid",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "3163",
+   "rank": 110,
+   "name": "Jared Goff",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "10222",
+   "rank": 111,
+   "name": "Jayden Reed",
+   "sos": 5,
+   "bye": 11
+  },
+  {
+   "player_id": "4217",
+   "rank": 112,
+   "name": "George Kittle",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "9500",
+   "rank": 113,
+   "name": "Josh Downs",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "5849",
+   "rank": 114,
+   "name": "Kyler Murray",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "12533",
+   "rank": 115,
+   "name": "Jacory Croskey-Merritt",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "8110",
+   "rank": 116,
+   "name": "Jake Ferguson",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "8131",
+   "rank": 117,
+   "name": "Isaiah Likely",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "8408",
+   "rank": 118,
+   "name": "Jordan Mason",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "5022",
+   "rank": 119,
+   "name": "Dallas Goedert",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "11624",
+   "rank": 120,
+   "name": "Xavier Worthy",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "6804",
+   "rank": 121,
+   "name": "Jordan Love",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "4892",
+   "rank": 122,
+   "name": "Baker Mayfield",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "12484",
+   "rank": 123,
+   "name": "Jayden Higgins",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "11655",
+   "rank": 124,
+   "name": "Tyrone Tracy Jr.",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "12545",
+   "rank": 125,
+   "name": "Tyler Shough",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "8134",
+   "rank": 126,
+   "name": "Khalil Shakir",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "5012",
+   "rank": 127,
+   "name": "Mark Andrews",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "10219",
+   "rank": 128,
+   "name": "Chris Rodriguez Jr.",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "8121",
+   "rank": 129,
+   "name": "Romeo Doubs",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "13298",
+   "rank": 130,
+   "name": "KC Concepcion",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "9753",
+   "rank": 131,
+   "name": "Zach Charbonnet",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "8161",
+   "rank": 132,
+   "name": "Malik Willis",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "11583",
+   "rank": 133,
+   "name": "Jonathon Brooks",
+   "sos": 1,
+   "bye": 5
+  },
+  {
+   "player_id": "8132",
+   "rank": 134,
+   "name": "Tyler Allgeier",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "11646",
+   "rank": 135,
+   "name": "Jalen Coker",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "12501",
+   "rank": 136,
+   "name": "Matthew Golden",
+   "sos": 5,
+   "bye": 11
+  },
+  {
+   "player_id": "8205",
+   "rank": 137,
+   "name": "Isiah Pacheco",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "12474",
+   "rank": 138,
+   "name": "Woody Marks",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "7002",
+   "rank": 139,
+   "name": "Juwan Johnson",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "9508",
+   "rank": 140,
+   "name": "Tyjae Spears",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "12469",
+   "rank": 141,
+   "name": "Dylan Sampson",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "9758",
+   "rank": 142,
+   "name": "C.J. Stroud",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "9480",
+   "rank": 143,
+   "name": "Brenton Strange",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "3214",
+   "rank": 144,
+   "name": "Hunter Henry",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "8676",
+   "rank": 145,
+   "name": "Rashid Shaheed",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "12493",
+   "rank": 146,
+   "name": "Oronde Gadsden II",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "9511",
+   "rank": 147,
+   "name": "Keaton Mitchell",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "4035",
+   "rank": 148,
+   "name": "Alvin Kamara",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "4943",
+   "rank": 149,
+   "name": "Sam Darnold",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "12522",
+   "rank": 150,
+   "name": "Cam Ward",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "8154",
+   "rank": 151,
+   "name": "Brian Robinson Jr.",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "13276",
+   "rank": 152,
+   "name": "Omar Cooper Jr.",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "8210",
+   "rank": 153,
+   "name": "Chig Okonkwo",
+   "sos": 1,
+   "bye": 7
+  },
+  {
+   "player_id": "6783",
+   "rank": 154,
+   "name": "Jerry Jeudy",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "9225",
+   "rank": 155,
+   "name": "Tank Bigsby",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "7049",
+   "rank": 156,
+   "name": "Jauan Jennings",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "5870",
+   "rank": 157,
+   "name": "Daniel Jones",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "13345",
+   "rank": 158,
+   "name": "Jonah Coleman",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "11618",
+   "rank": 159,
+   "name": "Jalen McMillan",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "13346",
+   "rank": 160,
+   "name": "Denzel Boston",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "12530",
+   "rank": 161,
+   "name": "Travis Hunter",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "11625",
+   "rank": 162,
+   "name": "Adonai Mitchell",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "5001",
+   "rank": 163,
+   "name": "Dalton Schultz",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "9228",
+   "rank": 164,
+   "name": "Bryce Young",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "11576",
+   "rank": 165,
+   "name": "Braelon Allen",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "9504",
+   "rank": 166,
+   "name": "Kayshon Boutte",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "10213",
+   "rank": 167,
+   "name": "Tre Tucker",
+   "sos": 2,
+   "bye": 13
+  },
+  {
+   "player_id": "13330",
+   "rank": 168,
+   "name": "Kenyon Sadiq",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "11783",
+   "rank": 169,
+   "name": "Ryan Flournoy",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "11435",
+   "rank": 170,
+   "name": "Emanuel Wilson",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "12509",
+   "rank": 171,
+   "name": "Tre' Harris",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "5844",
+   "rank": 172,
+   "name": "T.J. Hockenson",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "11627",
+   "rank": 173,
+   "name": "Troy Franklin",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "11603",
+   "rank": 174,
+   "name": "AJ Barner",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "11647",
+   "rank": 175,
+   "name": "Kimani Vidal",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "4981",
+   "rank": 176,
+   "name": "Calvin Ridley",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "12535",
+   "rank": 177,
+   "name": "Isaac TeSlaa",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "4137",
+   "rank": 178,
+   "name": "James Conner",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "11575",
+   "rank": 179,
+   "name": "Ray Davis",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "12536",
+   "rank": 180,
+   "name": "Jaylin Noel",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "HOU",
+   "rank": 181,
+   "name": "Houston Texans",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "2449",
+   "rank": 182,
+   "name": "Stefon Diggs",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "12502",
+   "rank": 183,
+   "name": "Gunnar Helm",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "12492",
+   "rank": 184,
+   "name": "Pat Bryant",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "7090",
+   "rank": 185,
+   "name": "Darnell Mooney",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "13337",
+   "rank": 186,
+   "name": "Emmett Johnson",
+   "sos": 3,
+   "bye": 5
+  },
+  {
+   "player_id": "13417",
+   "rank": 187,
+   "name": "De'Zhaun Stribling",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "8180",
+   "rank": 188,
+   "name": "Jalen Nailor",
+   "sos": 2,
+   "bye": 13
+  },
+  {
+   "player_id": "9506",
+   "rank": 189,
+   "name": "Sean Tucker",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "13305",
+   "rank": 190,
+   "name": "Mike Washington Jr.",
+   "sos": 2,
+   "bye": 13
+  },
+  {
+   "player_id": "3257",
+   "rank": 191,
+   "name": "Jacoby Brissett",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "DEN",
+   "rank": 192,
+   "name": "Denver Broncos",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "11610",
+   "rank": 193,
+   "name": "Malik Washington",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "SEA",
+   "rank": 194,
+   "name": "Seattle Seahawks",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "5872",
+   "rank": 195,
+   "name": "Deebo Samuel Sr.",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "7600",
+   "rank": 196,
+   "name": "Pat Freiermuth",
+   "sos": 2,
+   "bye": 9
+  },
+  {
+   "player_id": "LAR",
+   "rank": 197,
+   "name": "Los Angeles Rams",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "4033",
+   "rank": 198,
+   "name": "David Njoku",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "12487",
+   "rank": 199,
+   "name": "Terrance Ferguson",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "PHI",
+   "rank": 200,
+   "name": "Philadelphia Eagles",
+   "sos": 0,
+   "bye": 10
+  },
+  {
+   "player_id": "13288",
+   "rank": 201,
+   "name": "Nicholas Singleton",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "PIT",
+   "rank": 202,
+   "name": "Pittsburgh Steelers",
+   "sos": 5,
+   "bye": 9
+  },
+  {
+   "player_id": "JAX",
+   "rank": 203,
+   "name": "Jacksonville Jaguars",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "13317",
+   "rank": 204,
+   "name": "Ted Hurst III",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "3451",
+   "rank": 205,
+   "name": "Ka'imi Fairbairn",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "12540",
+   "rank": 206,
+   "name": "Chimere Dike",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "8111",
+   "rank": 207,
+   "name": "Cade Otton",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "8259",
+   "rank": 208,
+   "name": "Cameron Dicker",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "11533",
+   "rank": 209,
+   "name": "Brandon Aubrey",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "MIN",
+   "rank": 210,
+   "name": "Minnesota Vikings",
+   "sos": 1,
+   "bye": 6
+  },
+  {
+   "player_id": "NE",
+   "rank": 211,
+   "name": "New England Patriots",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "9486",
+   "rank": 212,
+   "name": "Dontayvion Wicks",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "11786",
+   "rank": 213,
+   "name": "Cam Little",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "9502",
+   "rank": 214,
+   "name": "Tank Dell",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "2747",
+   "rank": 215,
+   "name": "Jason Myers",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "13301",
+   "rank": 216,
+   "name": "Antonio Williams",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "LAC",
+   "rank": 217,
+   "name": "Los Angeles Chargers",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "1373",
+   "rank": 218,
+   "name": "Geno Smith",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "7571",
+   "rank": 219,
+   "name": "Rashod Bateman",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "11643",
+   "rank": 220,
+   "name": "Jaylen Wright",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "6865",
+   "rank": 221,
+   "name": "Colby Parkinson",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "96",
+   "rank": 222,
+   "name": "Aaron Rodgers",
+   "sos": 2,
+   "bye": 9
+  },
+  {
+   "player_id": "5189",
+   "rank": 223,
+   "name": "Eddy Pineiro",
+   "sos": 5,
+   "bye": 8
+  },
+  {
+   "player_id": "13274",
+   "rank": 224,
+   "name": "Germie Bernard",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "12711",
+   "rank": 225,
+   "name": "Tyler Loop",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "12495",
+   "rank": 226,
+   "name": "Ollie Gordon II",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "13320",
+   "rank": 227,
+   "name": "Zachariah Branch",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "4039",
+   "rank": 228,
+   "name": "Cooper Kupp",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "KC",
+   "rank": 229,
+   "name": "Kansas City Chiefs",
+   "sos": 3,
+   "bye": 5
+  },
+  {
+   "player_id": "BAL",
+   "rank": 230,
+   "name": "Baltimore Ravens",
+   "sos": 5,
+   "bye": 13
+  },
+  {
+   "player_id": "13405",
+   "rank": 231,
+   "name": "Kaytron Allen",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "11581",
+   "rank": 232,
+   "name": "MarShawn Lloyd",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "2020",
+   "rank": 233,
+   "name": "Cairo Santos",
+   "sos": 0,
+   "bye": 10
+  },
+  {
+   "player_id": "11539",
+   "rank": 234,
+   "name": "Jake Bates",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "5995",
+   "rank": 235,
+   "name": "Justice Hill",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "13424",
+   "rank": 236,
+   "name": "Seth McGowan",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "7839",
+   "rank": 237,
+   "name": "Evan McPherson",
+   "sos": 2,
+   "bye": 6
+  },
+  {
+   "player_id": "6803",
+   "rank": 238,
+   "name": "Brandon Aiyuk",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "12499",
+   "rank": 239,
+   "name": "Elic Ayomanor",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "GB",
+   "rank": 240,
+   "name": "Green Bay Packers",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "12713",
+   "rank": 241,
+   "name": "Andy Borregales",
+   "sos": 1,
+   "bye": 11
+  },
+  {
+   "player_id": "13349",
+   "rank": 242,
+   "name": "Eli Stowers",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "DET",
+   "rank": 243,
+   "name": "Detroit Lions",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "13269",
+   "rank": 244,
+   "name": "Fernando Mendoza",
+   "sos": 1,
+   "bye": 13
+  },
+  {
+   "player_id": "BUF",
+   "rank": 245,
+   "name": "Buffalo Bills",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "12483",
+   "rank": 246,
+   "name": "Jack Bech",
+   "sos": 2,
+   "bye": 13
+  },
+  {
+   "player_id": "11637",
+   "rank": 247,
+   "name": "Keon Coleman",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "CLE",
+   "rank": 248,
+   "name": "Cleveland Browns",
+   "sos": 5,
+   "bye": 11
+  },
+  {
+   "player_id": "8800",
+   "rank": 249,
+   "name": "Malik Davis",
+   "sos": 4,
+   "bye": 14
+  },
+  {
+   "player_id": "13268",
+   "rank": 250,
+   "name": "Elijah Sarratt",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "6650",
+   "rank": 251,
+   "name": "Chase McLaughlin",
+   "sos": 3,
+   "bye": 10
+  },
+  {
+   "player_id": "4950",
+   "rank": 252,
+   "name": "Christian Kirk",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "12497",
+   "rank": 253,
+   "name": "Tory Horton",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "13319",
+   "rank": 254,
+   "name": "Oscar Delp",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "12015",
+   "rank": 255,
+   "name": "Harrison Mevis",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "4066",
+   "rank": 256,
+   "name": "Evan Engram",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "6039",
+   "rank": 257,
+   "name": "Ty Johnson",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "4227",
+   "rank": 258,
+   "name": "Harrison Butker",
+   "sos": 5,
+   "bye": 5
+  },
+  {
+   "player_id": "11370",
+   "rank": 259,
+   "name": "Chris Brooks",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "12467",
+   "rank": 260,
+   "name": "Jordan James",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "1945",
+   "rank": 261,
+   "name": "Chris Boswell",
+   "sos": 4,
+   "bye": 9
+  },
+  {
+   "player_id": "13311",
+   "rank": 262,
+   "name": "Chris Bell",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "6768",
+   "rank": 263,
+   "name": "Tua Tagovailoa",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "13285",
+   "rank": 264,
+   "name": "Malachi Fields",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "12471",
+   "rank": 265,
+   "name": "DJ Giddens",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "4147",
+   "rank": 266,
+   "name": "Samaje Perine",
+   "sos": 2,
+   "bye": 6
+  },
+  {
+   "player_id": "12457",
+   "rank": 267,
+   "name": "Jaydon Blue",
+   "sos": 4,
+   "bye": 14
+  },
+  {
+   "player_id": "12476",
+   "rank": 268,
+   "name": "Devin Neal",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "3321",
+   "rank": 269,
+   "name": "Tyreek Hill",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "8188",
+   "rank": 270,
+   "name": "Tyquan Thornton",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "12504",
+   "rank": 271,
+   "name": "Kaleb Johnson",
+   "sos": 2,
+   "bye": 9
+  },
+  {
+   "player_id": "11559",
+   "rank": 272,
+   "name": "Michael Penix Jr.",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "13347",
+   "rank": 273,
+   "name": "Demond Claiborne",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "12048",
+   "rank": 274,
+   "name": "George Holani",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "13353",
+   "rank": 275,
+   "name": "Chris Brazzell II",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "12498",
+   "rank": 276,
+   "name": "Mason Taylor",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "11589",
+   "rank": 277,
+   "name": "Trey Benson",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "3678",
+   "rank": 278,
+   "name": "Wil Lutz",
+   "sos": 1,
+   "bye": 10
+  },
+  {
+   "player_id": "9494",
+   "rank": 279,
+   "name": "Marvin Mims Jr.",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "11597",
+   "rank": 280,
+   "name": "Theo Johnson",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "11834",
+   "rank": 281,
+   "name": "Devaughn Vele",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "11571",
+   "rank": 282,
+   "name": "Isaiah Davis",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "6149",
+   "rank": 283,
+   "name": "Darius Slayton",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "12544",
+   "rank": 284,
+   "name": "LeQuint Allen Jr.",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "12524",
+   "rank": 285,
+   "name": "Shedeur Sanders",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "1166",
+   "rank": 286,
+   "name": "Kirk Cousins",
+   "sos": 1,
+   "bye": 13
+  },
+  {
+   "player_id": "11626",
+   "rank": 287,
+   "name": "Xavier Legette",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "ATL",
+   "rank": 288,
+   "name": "Atlanta Falcons",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "11792",
+   "rank": 289,
+   "name": "Will Reichard",
+   "sos": 2,
+   "bye": 6
+  },
+  {
+   "player_id": "6130",
+   "rank": 290,
+   "name": "Devin Singletary",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "11199",
+   "rank": 291,
+   "name": "Emari Demercado",
+   "sos": 3,
+   "bye": 5
+  },
+  {
+   "player_id": "12455",
+   "rank": 292,
+   "name": "Brashard Smith",
+   "sos": 3,
+   "bye": 5
+  },
+  {
+   "player_id": "8172",
+   "rank": 293,
+   "name": "Greg Dulcich",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "9757",
+   "rank": 294,
+   "name": "Kendre Miller",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "4177",
+   "rank": 295,
+   "name": "Mack Hollins",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "1479",
+   "rank": 296,
+   "name": "Keenan Allen",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "5848",
+   "rank": 297,
+   "name": "Hollywood Brown",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "12547",
+   "rank": 298,
+   "name": "Kyle Williams",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "13414",
+   "rank": 299,
+   "name": "Kaelon Black",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "4993",
+   "rank": 300,
+   "name": "Mike Gesicki",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "8143",
+   "rank": 301,
+   "name": "Jerome Ford",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "4017",
+   "rank": 302,
+   "name": "Deshaun Watson",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "7528",
+   "rank": 303,
+   "name": "Najee Harris",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "13302",
+   "rank": 304,
+   "name": "Adam Randall",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "SF",
+   "rank": 305,
+   "name": "San Francisco 49ers",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "IND",
+   "rank": 306,
+   "name": "Indianapolis Colts",
+   "sos": 5,
+   "bye": 13
+  },
+  {
+   "player_id": "11653",
+   "rank": 307,
+   "name": "Charlie Smyth",
+   "sos": 5,
+   "bye": 8
+  },
+  {
+   "player_id": "12531",
+   "rank": 308,
+   "name": "Trevor Etienne",
+   "sos": 1,
+   "bye": 5
+  },
+  {
+   "player_id": "12503",
+   "rank": 309,
+   "name": "Isaiah Bond",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "12543",
+   "rank": 310,
+   "name": "Tahj Brooks",
+   "sos": 2,
+   "bye": 6
+  },
+  {
+   "player_id": "11651",
+   "rank": 311,
+   "name": "Isaac Guerendo",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "13402",
+   "rank": 312,
+   "name": "Skyler Bell",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "11439",
+   "rank": 313,
+   "name": "Jaleel McLaughlin",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "8698",
+   "rank": 314,
+   "name": "Jake Tonges",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "13293",
+   "rank": 315,
+   "name": "Ja'Kobi Lane",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "4018",
+   "rank": 316,
+   "name": "Joe Mixon",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "11569",
+   "rank": 317,
+   "name": "Jarquez Hunter",
+   "sos": 5,
+   "bye": 11
+  },
+  {
+   "player_id": "4098",
+   "rank": 318,
+   "name": "Kareem Hunt",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "10226",
+   "rank": 319,
+   "name": "Andrei Iosivas",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "NO",
+   "rank": 320,
+   "name": "New Orleans Saints",
+   "sos": 5,
+   "bye": 8
+  },
+  {
+   "player_id": "9479",
+   "rank": 321,
+   "name": "Darnell Washington",
+   "sos": 2,
+   "bye": 9
+  },
+  {
+   "player_id": "11579",
+   "rank": 322,
+   "name": "Audric Estime",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "10444",
+   "rank": 323,
+   "name": "Cedric Tillman",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "CHI",
+   "rank": 324,
+   "name": "Chicago Bears",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "11565",
+   "rank": 325,
+   "name": "J.J. McCarthy",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "11577",
+   "rank": 326,
+   "name": "Will Shipley",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "12505",
+   "rank": 327,
+   "name": "Jalen Royals",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "8119",
+   "rank": 328,
+   "name": "Jahan Dotson",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "8125",
+   "rank": 329,
+   "name": "Calvin Austin III",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "12485",
+   "rank": 330,
+   "name": "Tez Johnson",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "12718",
+   "rank": 331,
+   "name": "Konata Mumpfield",
+   "sos": 1,
+   "bye": 11
+  },
+  {
+   "player_id": "11650",
+   "rank": 332,
+   "name": "Luke McCaffrey",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "13278",
+   "rank": 333,
+   "name": "Max Klare",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "13296",
+   "rank": 334,
+   "name": "Caleb Douglas",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "6271",
+   "rank": 335,
+   "name": "Olamide Zaccheaus",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "8117",
+   "rank": 336,
+   "name": "Jalen Tolbert",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "7828",
+   "rank": 337,
+   "name": "Noah Gray",
+   "sos": 4,
+   "bye": 5
+  },
+  {
+   "player_id": "7527",
+   "rank": 338,
+   "name": "Mac Jones",
+   "sos": 1,
+   "bye": 8
+  },
+  {
+   "player_id": "12521",
+   "rank": 339,
+   "name": "Elijah Arroyo",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "6826",
+   "rank": 341,
+   "name": "Cole Kmet",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "10218",
+   "rank": 343,
+   "name": "Xavier Hutchinson",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "3271",
+   "rank": 344,
+   "name": "Tyler Higbee",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "12541",
+   "rank": 345,
+   "name": "Dont'e Thornton Jr.",
+   "sos": 2,
+   "bye": 13
+  },
+  {
+   "player_id": "5906",
+   "rank": 346,
+   "name": "Dawson Knox",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "7670",
+   "rank": 347,
+   "name": "Joshua Palmer",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "9482",
+   "rank": 348,
+   "name": "Michael Mayer",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "13380",
+   "rank": 349,
+   "name": "Brenen Thompson",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "11600",
+   "rank": 350,
+   "name": "Ja'Tavion Sanders",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "13272",
+   "rank": 351,
+   "name": "Carson Beck",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "13348",
+   "rank": 352,
+   "name": "J'Mari Taylor",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "4988",
+   "rank": 353,
+   "name": "Nick Chubb",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "11588",
+   "rank": 354,
+   "name": "Jawhar Jordan",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "13275",
+   "rank": 355,
+   "name": "Ty Simpson",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "13420",
+   "rank": 356,
+   "name": "Bryce Lance",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "8147",
+   "rank": 357,
+   "name": "John Metchie III",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "9501",
+   "rank": 358,
+   "name": "DeMario Douglas",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "CAR",
+   "rank": 359,
+   "name": "Carolina Panthers",
+   "sos": 3,
+   "bye": 5
+  },
+  {
+   "player_id": "7591",
+   "rank": 360,
+   "name": "Justin Fields",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "7607",
+   "rank": 361,
+   "name": "Michael Carter",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "8135",
+   "rank": 362,
+   "name": "Treylon Burks",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "4454",
+   "rank": 363,
+   "name": "Kendrick Bourne",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "7496",
+   "rank": 364,
+   "name": "Nick Westbrook-Ikhine",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "5857",
+   "rank": 365,
+   "name": "Noah Fant",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "3634",
+   "rank": 366,
+   "name": "Kalif Raymond",
+   "sos": 3,
+   "bye": 10
+  },
+  {
+   "player_id": "4663",
+   "rank": 367,
+   "name": "Austin Ekeler",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "12472",
+   "rank": 368,
+   "name": "Raheim Sanders",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "13400",
+   "rank": 369,
+   "name": "Justin Joly",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "12641",
+   "rank": 370,
+   "name": "Jaylin Lane",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "12482",
+   "rank": 371,
+   "name": "Savion Williams",
+   "sos": 5,
+   "bye": 11
+  },
+  {
+   "player_id": "13411",
+   "rank": 372,
+   "name": "Zavion Thomas",
+   "sos": 3,
+   "bye": 10
+  },
+  {
+   "player_id": "9229",
+   "rank": 373,
+   "name": "Anthony Richardson Sr.",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "8917",
+   "rank": 374,
+   "name": "KaVontae Turpin",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "13421",
+   "rank": 375,
+   "name": "Eli Raridon",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "7042",
+   "rank": 376,
+   "name": "Tyler Bass",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "9481",
+   "rank": 377,
+   "name": "Luke Musgrave",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "11596",
+   "rank": 378,
+   "name": "Ben Sinnott",
+   "sos": 1,
+   "bye": 7
+  },
+  {
+   "player_id": "DAL",
+   "rank": 379,
+   "name": "Dallas Cowboys",
+   "sos": 1,
+   "bye": 14
+  },
+  {
+   "player_id": "13338",
+   "rank": 380,
+   "name": "Kevin Coleman Jr.",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "7694",
+   "rank": 381,
+   "name": "Tommy Tremble",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "12738",
+   "rank": 382,
+   "name": "Phil Mafah",
+   "sos": 4,
+   "bye": 14
+  },
+  {
+   "player_id": "7562",
+   "rank": 383,
+   "name": "Tutu Atwell",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "4233",
+   "rank": 384,
+   "name": "Zane Gonzalez",
+   "sos": 2,
+   "bye": 6
+  },
+  {
+   "player_id": "4195",
+   "rank": 385,
+   "name": "Jake Elliott",
+   "sos": 5,
+   "bye": 10
+  },
+  {
+   "player_id": "13333",
+   "rank": 386,
+   "name": "Deion Burks",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "11623",
+   "rank": 387,
+   "name": "Jordan Whittington",
+   "sos": 1,
+   "bye": 11
+  },
+  {
+   "player_id": "8225",
+   "rank": 388,
+   "name": "Daniel Bellinger",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "8129",
+   "rank": 389,
+   "name": "Dameon Pierce",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "10231",
+   "rank": 390,
+   "name": "Elijah Higgins",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "5970",
+   "rank": 391,
+   "name": "Greg Dortch",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "12473",
+   "rank": 392,
+   "name": "Mitchell Evans",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "1339",
+   "rank": 393,
+   "name": "Zach Ertz",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "2505",
+   "rank": 394,
+   "name": "Darren Waller",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "10235",
+   "rank": 395,
+   "name": "Roschon Johnson",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "13413",
+   "rank": 396,
+   "name": "Cyrus Allen",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "2374",
+   "rank": 397,
+   "name": "Tyler Lockett",
+   "sos": 2,
+   "bye": 13
+  },
+  {
+   "player_id": "1379",
+   "rank": 398,
+   "name": "Kyle Juszczyk",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "7716",
+   "rank": 399,
+   "name": "John Bates",
+   "sos": 1,
+   "bye": 7
+  },
+  {
+   "player_id": "7587",
+   "rank": 400,
+   "name": "Dyami Brown",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "CIN",
+   "rank": 401,
+   "name": "Cincinnati Bengals",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "12412",
+   "rank": 402,
+   "name": "Terrell Jennings",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "NYG",
+   "rank": 404,
+   "name": "New York Giants",
+   "sos": 1,
+   "bye": 8
+  },
+  {
+   "player_id": "11570",
+   "rank": 405,
+   "name": "Rasheen Ali",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "4144",
+   "rank": 406,
+   "name": "Jonnu Smith",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "6945",
+   "rank": 407,
+   "name": "Antonio Gibson",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "13270",
+   "rank": 408,
+   "name": "CJ Daniels",
+   "sos": 1,
+   "bye": 11
+  },
+  {
+   "player_id": "5973",
+   "rank": 409,
+   "name": "Josh Oliver",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "12462",
+   "rank": 411,
+   "name": "Damien Martinez",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "13403",
+   "rank": 412,
+   "name": "Jam Miller",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "11629",
+   "rank": 413,
+   "name": "Devontez Walker",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "2307",
+   "rank": 414,
+   "name": "Marcus Mariota",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "2078",
+   "rank": 415,
+   "name": "Odell Beckham Jr.",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "3202",
+   "rank": 416,
+   "name": "Austin Hooper",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "13307",
+   "rank": 417,
+   "name": "Marlin Klein",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "TB",
+   "rank": 418,
+   "name": "Tampa Bay Buccaneers",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "6869",
+   "rank": 419,
+   "name": "Adam Trautman",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "7891",
+   "rank": 420,
+   "name": "Brock Wright",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "13079",
+   "rank": 421,
+   "name": "Jahdae Walker",
+   "sos": 3,
+   "bye": 10
+  },
+  {
+   "player_id": "10871",
+   "rank": 422,
+   "name": "Luke Schoonmaker",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "6151",
+   "rank": 423,
+   "name": "Miles Sanders",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "4219",
+   "rank": 424,
+   "name": "Jeremy McNichols",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "13545",
+   "rank": 425,
+   "name": "Trey Smack",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "3200",
+   "rank": 426,
+   "name": "Sterling Shepard",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "19",
+   "rank": 427,
+   "name": "Joe Flacco",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "11068",
+   "rank": 428,
+   "name": "Mitch Tinsley",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "13299",
+   "rank": 429,
+   "name": "Nate Boerkircher",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "1426",
+   "rank": 430,
+   "name": "DeAndre Hopkins",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "2306",
+   "rank": 431,
+   "name": "Jameis Winston",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "TEN",
+   "rank": 432,
+   "name": "Tennessee Titans",
+   "sos": 2,
+   "bye": 9
+  },
+  {
+   "player_id": "3286",
+   "rank": 433,
+   "name": "Demarcus Robinson",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "13477",
+   "rank": 434,
+   "name": "Colbie Young",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "2749",
+   "rank": 435,
+   "name": "Raheem Mostert",
+   "sos": 2,
+   "bye": 13
+  },
+  {
+   "player_id": "11729",
+   "rank": 436,
+   "name": "Sione Vaki",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "12185",
+   "rank": 437,
+   "name": "Spencer Shrader",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "7608",
+   "rank": 438,
+   "name": "Khalil Herbert",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "MIA",
+   "rank": 439,
+   "name": "Miami Dolphins",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "5409",
+   "rank": 440,
+   "name": "Tanner Hudson",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "12658",
+   "rank": 441,
+   "name": "Jackson Hawes",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "8230",
+   "rank": 442,
+   "name": "Ty Chandler",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "11574",
+   "rank": 443,
+   "name": "Dylan Laube",
+   "sos": 2,
+   "bye": 13
+  },
+  {
+   "player_id": "6427",
+   "rank": 444,
+   "name": "Ashton Dulin",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "8200",
+   "rank": 445,
+   "name": "Kevin Austin Jr.",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "7596",
+   "rank": 446,
+   "name": "Elijah Moore",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "11630",
+   "rank": 448,
+   "name": "Roman Wilson",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "13322",
+   "rank": 449,
+   "name": "Sam Roush",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "11557",
+   "rank": 451,
+   "name": "Joe Milton III",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "2197",
+   "rank": 452,
+   "name": "Brandin Cooks",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "7537",
+   "rank": 453,
+   "name": "Jaret Patterson",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "8423",
+   "rank": 454,
+   "name": "Brittain Brown",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "13324",
+   "rank": 456,
+   "name": "Matt Hibner",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "6938",
+   "rank": 457,
+   "name": "Cam Akers",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "13419",
+   "rank": 460,
+   "name": "Jaydn Ott",
+   "sos": 3,
+   "bye": 5
+  },
+  {
+   "player_id": "7561",
+   "rank": 461,
+   "name": "Elijah Mitchell",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "6853",
+   "rank": 463,
+   "name": "Van Jefferson",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "11168",
+   "rank": 465,
+   "name": "Xavier Smith",
+   "sos": 1,
+   "bye": 11
+  },
+  {
+   "player_id": "11299",
+   "rank": 466,
+   "name": "Zavier Scott",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "4080",
+   "rank": 467,
+   "name": "Zay Jones",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "2359",
+   "rank": 468,
+   "name": "Ameer Abdullah",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "11510",
+   "rank": 469,
+   "name": "Hunter Luepke",
+   "sos": 4,
+   "bye": 14
+  },
+  {
+   "player_id": "8207",
+   "rank": 470,
+   "name": "Tyler Goodson",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "4171",
+   "rank": 471,
+   "name": "Josh Reynolds",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "13047",
+   "rank": 472,
+   "name": "Jacardia Wright",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "6828",
+   "rank": 473,
+   "name": "AJ Dillon",
+   "sos": 1,
+   "bye": 5
+  },
+  {
+   "player_id": "6001",
+   "rank": 474,
+   "name": "Drew Sample",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "6820",
+   "rank": 476,
+   "name": "Clyde Edwards-Helaire",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "8195",
+   "rank": 477,
+   "name": "Ronnie Rivers",
+   "sos": 5,
+   "bye": 11
+  },
+  {
+   "player_id": "8127",
+   "rank": 478,
+   "name": "Charlie Kolar",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "11058",
+   "rank": 479,
+   "name": "Blake Grupe",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "10937",
+   "rank": 480,
+   "name": "Jake Moody",
+   "sos": 5,
+   "bye": 7
+  },
+  {
+   "player_id": "12515",
+   "rank": 481,
+   "name": "Donovan Edwards",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "12516",
+   "rank": 483,
+   "name": "Kalel Mullings",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "WAS",
+   "rank": 484,
+   "name": "Washington Commanders",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "4381",
+   "rank": 485,
+   "name": "Taysom Hill",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "5955",
+   "rank": 486,
+   "name": "Hunter Renfrow",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "4054",
+   "rank": 487,
+   "name": "Mo Alie-Cox",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "6843",
+   "rank": 488,
+   "name": "Albert Okwuegbunam Jr.",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "8204",
+   "rank": 489,
+   "name": "Bo Melton",
+   "sos": 5,
+   "bye": 11
+  },
+  {
+   "player_id": "5980",
+   "rank": 490,
+   "name": "Myles Gaskin",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "12496",
+   "rank": 491,
+   "name": "Tai Felton",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "8139",
+   "rank": 492,
+   "name": "Zamir White",
+   "sos": 2,
+   "bye": 13
+  },
+  {
+   "player_id": "4351",
+   "rank": 493,
+   "name": "Tim Patrick",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "6528",
+   "rank": 494,
+   "name": "Joey Slye",
+   "sos": 4,
+   "bye": 9
+  },
+  {
+   "player_id": "11640",
+   "rank": 495,
+   "name": "Jermaine Burton",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "11433",
+   "rank": 496,
+   "name": "Nate Adkins",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "5008",
+   "rank": 498,
+   "name": "Durham Smythe",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "5010",
+   "rank": 499,
+   "name": "Will Dissly",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "10221",
+   "rank": 500,
+   "name": "Ronnie Bell",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "13303",
+   "rank": 501,
+   "name": "Cade Klubnik",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "10220",
+   "rank": 503,
+   "name": "Will Mallory",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "12480",
+   "rank": 509,
+   "name": "Moliki Matavao",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "5133",
+   "rank": 510,
+   "name": "Tyler Conklin",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "11371",
+   "rank": 512,
+   "name": "Julian Hill",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "12500",
+   "rank": 513,
+   "name": "Quinn Ewers",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "12520",
+   "rank": 514,
+   "name": "Xavier Restrepo",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "12935",
+   "rank": 515,
+   "name": "Jakobie Keeney-James",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "13434",
+   "rank": 516,
+   "name": "Will Kacmarek",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "10216",
+   "rank": 518,
+   "name": "Kenny McIntosh",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "13433",
+   "rank": 522,
+   "name": "Riley Nowakowski",
+   "sos": 2,
+   "bye": 9
+  },
+  {
+   "player_id": "11921",
+   "rank": 527,
+   "name": "Xavier Weaver",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "12897",
+   "rank": 530,
+   "name": "Nathan Carter",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "13491",
+   "rank": 531,
+   "name": "Kaden Wetjen",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "13429",
+   "rank": 533,
+   "name": "Seydou Traore",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "6920",
+   "rank": 534,
+   "name": "Isaiah Hodgins",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "13516",
+   "rank": 537,
+   "name": "Max Bredeson",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "11237",
+   "rank": 539,
+   "name": "Jacob Saylors",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "5096",
+   "rank": 540,
+   "name": "Ray-Ray McCloud III",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "13327",
+   "rank": 541,
+   "name": "Desmond Reid",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "9220",
+   "rank": 543,
+   "name": "Evan Hull",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "13282",
+   "rank": 549,
+   "name": "Jack Endries",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "13431",
+   "rank": 551,
+   "name": "Miles Kitselman",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "13315",
+   "rank": 552,
+   "name": "Dean Connors",
+   "sos": 5,
+   "bye": 11
+  },
+  {
+   "player_id": "8168",
+   "rank": 553,
+   "name": "Skyy Moore",
+   "sos": 5,
+   "bye": 11
+  },
+  {
+   "player_id": "6109",
+   "rank": 554,
+   "name": "Alec Ingold",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "8076",
+   "rank": 558,
+   "name": "Michael Bandy",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "13435",
+   "rank": 559,
+   "name": "Joe Royer",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "11034",
+   "rank": 561,
+   "name": "Jalen Brooks",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "13408",
+   "rank": 562,
+   "name": "Tanner Koziol",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "4274",
+   "rank": 563,
+   "name": "David Moore",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "6659",
+   "rank": 566,
+   "name": "Craig Reynolds",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "650",
+   "rank": 570,
+   "name": "Nick Folk",
+   "sos": 0,
+   "bye": 11
+  },
+  {
+   "player_id": "10955",
+   "rank": 571,
+   "name": "Chad Ryland",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "13401",
+   "rank": 573,
+   "name": "Michael Trigg",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "13273",
+   "rank": 575,
+   "name": "Josh Cuevas",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "12860",
+   "rank": 576,
+   "name": "Theo Wease Jr.",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "4353",
+   "rank": 577,
+   "name": "Patrick Ricard",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "8025",
+   "rank": 579,
+   "name": "Adam Prentice",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "11649",
+   "rank": 580,
+   "name": "Kendall Milton",
+   "sos": 2,
+   "bye": 6
+  },
+  {
+   "player_id": "1433",
+   "rank": 581,
+   "name": "Brandon McManus",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "13066",
+   "rank": 583,
+   "name": "Ben Sauls",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "12634",
+   "rank": 587,
+   "name": "Jordan Watkins",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "7842",
+   "rank": 589,
+   "name": "Luke Farrell",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "8116",
+   "rank": 590,
+   "name": "Pierre Strong Jr.",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "12475",
+   "rank": 593,
+   "name": "Ricky White III",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "10234",
+   "rank": 595,
+   "name": "Derius Davis",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "6144",
+   "rank": 596,
+   "name": "Trayveon Williams",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "6960",
+   "rank": 597,
+   "name": "Tyler Johnson",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "7075",
+   "rank": 599,
+   "name": "Charlie Woerner",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "8254",
+   "rank": 600,
+   "name": "Julius Chestnut",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "6931",
+   "rank": 601,
+   "name": "DeeJay Dallas",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "6323",
+   "rank": 603,
+   "name": "Andrew Beck",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "8208",
+   "rank": 610,
+   "name": "Tyler Badie",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "6694",
+   "rank": 611,
+   "name": "D'Ernest Johnson",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "11994",
+   "rank": 614,
+   "name": "Kameron Johnson",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "4718",
+   "rank": 615,
+   "name": "Dare Ogunbowale",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "4040",
+   "rank": 620,
+   "name": "JuJu Smith-Schuster",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "8123",
+   "rank": 621,
+   "name": "Hassan Haskins",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "13101",
+   "rank": 629,
+   "name": "Gage Larvadain",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "5285",
+   "rank": 630,
+   "name": "Ross Dwelley",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "8849",
+   "rank": 633,
+   "name": "Tanner Conner",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "4314",
+   "rank": 634,
+   "name": "Johnny Mundt",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "8489",
+   "rank": 635,
+   "name": "Drew Ogletree",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "11599",
+   "rank": 636,
+   "name": "Cade Stover",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "12523",
+   "rank": 637,
+   "name": "Jimmy Horn Jr.",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "7050",
+   "rank": 638,
+   "name": "Josiah Deguara",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "7204",
+   "rank": 640,
+   "name": "Reggie Gilliam",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "4443",
+   "rank": 641,
+   "name": "Pharaoh Brown",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "13297",
+   "rank": 642,
+   "name": "Reggie Virgil",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "5938",
+   "rank": 643,
+   "name": "Lil'Jordan Humphrey",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "11716",
+   "rank": 644,
+   "name": "Tip Reiman",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "8181",
+   "rank": 645,
+   "name": "Connor Heyward",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "4435",
+   "rank": 647,
+   "name": "Anthony Firkser",
+   "sos": 1,
+   "bye": 7
+  },
+  {
+   "player_id": "7946",
+   "rank": 648,
+   "name": "Jack Stoll",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "11082",
+   "rank": 649,
+   "name": "Ben Sims",
+   "sos": 5,
+   "bye": 6
+  },
+  {
+   "player_id": "11593",
+   "rank": 650,
+   "name": "Brevyn Spann-Ford",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "11595",
+   "rank": 651,
+   "name": "Jared Wiley",
+   "sos": 4,
+   "bye": 5
+  },
+  {
+   "player_id": "5121",
+   "rank": 652,
+   "name": "Braxton Berrios",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "8885",
+   "rank": 653,
+   "name": "Tucker Fisk",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "11806",
+   "rank": 654,
+   "name": "Casey Washington",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "4995",
+   "rank": 655,
+   "name": "Ian Thomas",
+   "sos": 3,
+   "bye": 13
+  },
+  {
+   "player_id": "8145",
+   "rank": 656,
+   "name": "Jeremy Ruckert",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "10212",
+   "rank": 657,
+   "name": "Josh Whyle",
+   "sos": 2,
+   "bye": 11
+  },
+  {
+   "player_id": "5985",
+   "rank": 658,
+   "name": "Foster Moreau",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "5113",
+   "rank": 659,
+   "name": "Cedrick Wilson Jr.",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "6850",
+   "rank": 661,
+   "name": "Harrison Bryant",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "7535",
+   "rank": 662,
+   "name": "Hunter Long",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "8170",
+   "rank": 663,
+   "name": "James Mitchell",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "8249",
+   "rank": 665,
+   "name": "Lucas Krull",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "8583",
+   "rank": 666,
+   "name": "Stone Smartt",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "3048",
+   "rank": 668,
+   "name": "Chris Manhertz",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "11820",
+   "rank": 670,
+   "name": "Devin Culp",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "4189",
+   "rank": 671,
+   "name": "Eric Saubert",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "8223",
+   "rank": 673,
+   "name": "Velus Jones Jr.",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "4234",
+   "rank": 675,
+   "name": "Noah Brown",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "10227",
+   "rank": 676,
+   "name": "Payne Durham",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "7536",
+   "rank": 678,
+   "name": "Quintin Morris",
+   "sos": 3,
+   "bye": 7
+  },
+  {
+   "player_id": "11201",
+   "rank": 679,
+   "name": "Blake Whiteheart",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "7568",
+   "rank": 680,
+   "name": "Brevin Jordan",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "10214",
+   "rank": 684,
+   "name": "Davis Allen",
+   "sos": 4,
+   "bye": 11
+  },
+  {
+   "player_id": "11762",
+   "rank": 685,
+   "name": "Anthony Gould",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "8177",
+   "rank": 687,
+   "name": "Grant Calcaterra",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "8219",
+   "rank": 690,
+   "name": "Jelani Woods",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "8484",
+   "rank": 692,
+   "name": "Ko Kieft",
+   "sos": 2,
+   "bye": 10
+  },
+  {
+   "player_id": "5086",
+   "rank": 693,
+   "name": "Marquez Valdes-Scantling",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "7602",
+   "rank": 694,
+   "name": "Kylen Granson",
+   "sos": 3,
+   "bye": 9
+  },
+  {
+   "player_id": "5251",
+   "rank": 702,
+   "name": "Tyler Davis",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "6943",
+   "rank": 704,
+   "name": "Gabe Davis",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "10225",
+   "rank": 705,
+   "name": "Jonathan Mingo",
+   "sos": 2,
+   "bye": 14
+  },
+  {
+   "player_id": "11157",
+   "rank": 707,
+   "name": "Brycen Tremayne",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "2750",
+   "rank": 708,
+   "name": "DeAndre Carter",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "11377",
+   "rank": 709,
+   "name": "Tyrell Shavers",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "10867",
+   "rank": 710,
+   "name": "Jake Bobo",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "11821",
+   "rank": 711,
+   "name": "Tahj Washington",
+   "sos": 3,
+   "bye": 6
+  },
+  {
+   "player_id": "11895",
+   "rank": 713,
+   "name": "Mason Tipton",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "13533",
+   "rank": 714,
+   "name": "Barion Brown",
+   "sos": 3,
+   "bye": 8
+  },
+  {
+   "player_id": "13394",
+   "rank": 715,
+   "name": "Josh Cameron",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "12670",
+   "rank": 716,
+   "name": "KeAndre Lambert-Smith",
+   "sos": 2,
+   "bye": 7
+  },
+  {
+   "player_id": "8235",
+   "rank": 719,
+   "name": "Samori Toure",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "6290",
+   "rank": 720,
+   "name": "Scotty Miller",
+   "sos": 3,
+   "bye": 10
+  },
+  {
+   "player_id": "7612",
+   "rank": 722,
+   "name": "Dee Eskridge",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "12699",
+   "rank": 723,
+   "name": "LaJohntay Wester",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "7595",
+   "rank": 724,
+   "name": "Tylan Wallace",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "5185",
+   "rank": 725,
+   "name": "Allen Lazard",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "12539",
+   "rank": 726,
+   "name": "Arian Smith",
+   "sos": 4,
+   "bye": 13
+  },
+  {
+   "player_id": "4082",
+   "rank": 727,
+   "name": "Curtis Samuel",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "11633",
+   "rank": 728,
+   "name": "Jamari Thrash",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "5773",
+   "rank": 730,
+   "name": "KhaDarel Hodge",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "11257",
+   "rank": 731,
+   "name": "Shedrick Jackson",
+   "sos": 2,
+   "bye": 13
+  },
+  {
+   "player_id": "7746",
+   "rank": 734,
+   "name": "Austin Trammell",
+   "sos": 4,
+   "bye": 7
+  },
+  {
+   "player_id": "8414",
+   "rank": 736,
+   "name": "Britain Covey",
+   "sos": 4,
+   "bye": 10
+  },
+  {
+   "player_id": "10228",
+   "rank": 738,
+   "name": "Charlie Jones",
+   "sos": 4,
+   "bye": 6
+  },
+  {
+   "player_id": "11616",
+   "rank": 745,
+   "name": "Jacob Cowing",
+   "sos": 2,
+   "bye": 8
+  },
+  {
+   "player_id": "9497",
+   "rank": 748,
+   "name": "Jalin Hyatt",
+   "sos": 4,
+   "bye": 8
+  },
+  {
+   "player_id": "6957",
+   "rank": 749,
+   "name": "James Proche II",
+   "sos": null,
+   "bye": null
+  },
+  {
+   "player_id": "11617",
+   "rank": 755,
+   "name": "Malachi Corley",
+   "sos": 3,
+   "bye": 11
+  },
+  {
+   "player_id": "11320",
+   "rank": 757,
+   "name": "Nikko Remigio",
+   "sos": 2,
+   "bye": 5
+  },
+  {
+   "player_id": "8013",
+   "rank": 760,
+   "name": "Tim Jones",
+   "sos": 4,
+   "bye": 7
+  }
+ ]
+}

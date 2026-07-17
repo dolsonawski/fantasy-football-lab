@@ -32,7 +32,11 @@ DATA_DIR.mkdir(parents=True, exist_ok=True)
 # Expert Consensus Rankings — the reference board the whole app compares
 # against (FantasyPros export, refreshed via upload). Kept outside the
 # imported-sets folder so it survives set deletions and has a stable id.
+# A copy is bundled with the app (app/seed/ecr.json) so ECR is available
+# out of the box on hosts with no persistent disk — an upload overrides it
+# until the next restart wipes the data dir.
 ECR_FILE = _DATA_ROOT / "ecr.json"
+ECR_SEED_FILE = Path(__file__).resolve().parent.parent / "seed" / "ecr.json"
 ECR_SET_ID = "ecr"
 
 ADP_SETS = {
@@ -88,7 +92,7 @@ async def build_name_index() -> dict[str, list[dict]]:
 
 
 def ecr_available() -> bool:
-    return ECR_FILE.exists()
+    return ECR_FILE.exists() or ECR_SEED_FILE.exists()
 
 
 def save_ecr(entries: list[dict], source_file: str) -> None:
@@ -98,7 +102,8 @@ def save_ecr(entries: list[dict], source_file: str) -> None:
 
 
 def _load_ecr() -> dict:
-    return json.loads(ECR_FILE.read_text(encoding="utf-8"))
+    path = ECR_FILE if ECR_FILE.exists() else ECR_SEED_FILE
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 async def list_sets(user_id: str | None = None) -> list[dict]:
