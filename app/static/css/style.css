@@ -361,9 +361,21 @@ tr.value-row-neg { background: rgba(255, 107, 107, 0.05); box-shadow: inset 3px 
   min-width: 34px; text-align: right; flex-shrink: 0;
 }
 
-/* snake board grid */
+/* snake board grid. Mobile scrolls sideways (no other option at phone
+   widths); desktop fits the full board to the pane width instead. */
 .snake-wrap { overflow-x: auto; padding-bottom: 6px; }
-.snake-grid { display: grid; gap: 4px; min-width: 640px; }
+.snake-grid {
+  display: grid;
+  gap: 4px;
+  min-width: 640px;
+  grid-template-columns: 34px repeat(var(--snake-teams, 12), minmax(86px, 1fr));
+}
+@media (min-width: 761px) {
+  .snake-grid {
+    min-width: 0;
+    grid-template-columns: 34px repeat(var(--snake-teams, 12), minmax(0, 1fr));
+  }
+}
 .snake-head {
   font-size: 10.5px; font-weight: 800; color: var(--text-faint);
   text-align: center; padding: 4px 2px; letter-spacing: 0.04em;
@@ -389,7 +401,7 @@ tr.value-row-neg { background: rgba(255, 107, 107, 0.05); box-shadow: inset 3px 
   justify-content: center;
 }
 .snake-cell .c-name { font-weight: 750; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.snake-cell .c-meta { opacity: 0.75; font-size: 9.5px; }
+.snake-cell .c-meta { opacity: 0.75; font-size: 9.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .snake-cell.pos-QB { background: rgba(185, 108, 255, 0.17); border-color: rgba(185, 108, 255, 0.35); color: #e3ccff; }
 .snake-cell.pos-RB { background: rgba(61, 220, 145, 0.15); border-color: rgba(61, 220, 145, 0.35); color: #c9f6df; }
 .snake-cell.pos-WR { background: rgba(88, 166, 255, 0.16); border-color: rgba(88, 166, 255, 0.35); color: #cfe4ff; }
@@ -659,7 +671,7 @@ main#app { padding-left: max(28px, env(safe-area-inset-left)); padding-right: ma
   .room-status { font-size: 12.5px; padding: 7px 12px; }
 
   table { font-size: 12.5px; }
-  th, td { padding: 8px 9px; }
+  th, td { padding: 8px 7px; }
 
   /* Suggestion + value cards go full width. */
   .pos-value-strip { grid-template-columns: 1fr; }
@@ -668,11 +680,9 @@ main#app { padding-left: max(28px, env(safe-area-inset-left)); padding-right: ma
   footer.app-footer { padding: 20px 16px 26px; font-size: 11px; }
 
   /* Draft room: segmented mobile tabs, one pane visible at a time. */
-  .room-mobile-tabs { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 14px; width: 100%; }
+  .room-mobile-tabs { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%; }
   .room-mobile-tabs::-webkit-scrollbar { display: none; }
   .room-mobile-tabs .seg { white-space: nowrap; }
-  .room-pane { display: none; }
-  .room-pane.active { display: block; }
 
   /* Sticky draft-room status strip: stays visible below the topbar. */
   .room-header {
@@ -685,8 +695,23 @@ main#app { padding-left: max(28px, env(safe-area-inset-left)); padding-right: ma
     padding: 10px 12px;
   }
 
-  /* Rankings: drop the Last-Yr Rank column, cap table scroll height. */
+  /* Rankings: drop the Proj column and the "+N spots" sub-note (the two
+     rank columns sit adjacent, so it's redundant), ellipsize long names,
+     cap table scroll height — keeps the compare columns on one screen. */
   .col-hide-mobile { display: none; }
+  .value-spots { display: none; }
+  td .player-cell .p-name {
+    display: block;
+    max-width: 112px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* Headshots, tier badges, and jumbo value chips cost width the compare
+     columns need on a phone (tier dividers still mark the tiers). */
+  .table-wrap .player-cell .avatar { display: none; }
+  .table-wrap td .tier-badge { display: none; }
+  .table-wrap .delta-chip.delta-big { font-size: 13px; padding: 4px 10px; }
   .table-wrap { max-height: 65vh; }
 }
 
@@ -709,11 +734,11 @@ main#app { padding-left: max(28px, env(safe-area-inset-left)); padding-right: ma
 .seg { background: transparent; color: var(--text-dim); box-shadow: none; padding: 7px 16px; font-size: 13px; }
 .seg.active { background: linear-gradient(135deg, var(--accent-dim), #0f5c38); color: #eafff4; }
 
-/* draft-room mobile tab bar: mobile-only (the ≤760px query styles it; this
-   hides it at desktop widths and must stay after the .seg-tabs base rule). */
-@media (min-width: 761px) {
-  .room-mobile-tabs { display: none; }
-}
+/* draft-room tab bar + panes: one pane at a time on ALL screen sizes, so no
+   pane is ever squeezed into a column that forces sideways scrolling. */
+.room-mobile-tabs { margin-bottom: 14px; }
+.room-pane { display: none; }
+.room-pane.active { display: block; }
 
 /* collapsible full draft board (report card) */
 .full-board-details summary { cursor: pointer; font-weight: 700; font-size: 16px; letter-spacing: -0.01em; }
@@ -824,17 +849,7 @@ tr.tier-divider td {
   padding-bottom: 6px;
 }
 
-/* ---- draft cockpit (desktop layout; mobile keeps .room-pane tabs) ----
-   All rules are guarded by min-width so nothing applies at <=760px. */
-@media (min-width: 761px) {
-  .draft-cockpit { display: grid; gap: 16px; align-items: start; }
-}
-@media (min-width: 1100px) {
-  .draft-cockpit { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
-}
-@media (min-width: 1350px) {
-  .draft-cockpit.three { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 0.9fr); }
-}
+/* ---- internal scroll helper (desktop; mobile panes use page scroll) ---- */
 @media (min-width: 761px) {
   .cockpit-scroll { max-height: calc(100vh - 210px); overflow: auto; }
 }

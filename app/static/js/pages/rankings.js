@@ -3,28 +3,49 @@ import { escapeHtml, posPill, fmtNum, formatLabel, playerCell, avatar, tierBadge
 
 const POSITIONS = ["ALL", "QB", "RB", "WR", "TE", "K", "DEF"];
 
+// Player first, then the two rank columns and Value adjacent — the A-vs-B
+// comparison reads left to right without the eye (or a phone) traveling.
 const COLUMNS = [
-  { key: "rank_a", label: "Rank", numeric: true },
   { key: "name", label: "Player", numeric: false },
-  { key: "pos_rank", label: "Pos Rank", numeric: false },
+  { key: "rank_a", label: "Rank", numeric: true },
   { key: "rank_b", label: "Rank", numeric: true },
   { key: "value_score", label: "Value", numeric: true },
-  { key: "proj_points", label: "Proj Pts", numeric: true },
-  { key: "perf_rank", label: "Last-Yr Rank", numeric: true },
+  { key: "pos_rank", label: "Pos", numeric: false },
+  { key: "proj_points", label: "Proj", numeric: true },
 ];
+
+// Short column-header names per source family; long headers were the main
+// driver of sideways scrolling (every th/td is nowrap).
+const SHORT_NAMES = {
+  fp_ecr: "ECR",
+  adp: "FFC",
+  espn_rank: "ESPN",
+  espn_adp: "ESPN ADP",
+  sleeper_adp: "Sleeper",
+  sleeper_dynasty: "Dynasty",
+  proj: "Proj",
+  computed: "Prod",
+};
+
+function shortSourceName(src) {
+  if (SHORT_NAMES[src]) return SHORT_NAMES[src];
+  const name = sourceName(src);
+  return name.length > 12 ? `${name.slice(0, 11)}…` : name;
+}
 
 const state = {
   format: "ppr",
   position: "ALL",
   // Default to the app's core question: where is ESPN's board wrong vs consensus?
   srcA: "espn_rank",   // source family (or imported set id)
-  srcB: null,          // resolved after sources load: ECR if present, else projections
+  srcB: null,          // resolved after sources load: live FantasyPros ECR, else projections
   sortKey: "rank_a",
   sortDir: 1,
   rows: [],
   sets: [],
   sources: [],         // [{id, name}] — format-agnostic
   rookiesOnly: false,
+  view: "board",       // "board" | "values" (ranked too low on A) | "landmines" (too high)
 };
 
 const FAMILY_RE = /^(adp|sleeper_adp|sleeper_dynasty|espn_rank|espn_adp|fp_ecr|proj|computed)_(standard|half_ppr|ppr)$/;
@@ -88,7 +109,7 @@ export async function renderRankings(container) {
     buildSources();
   }
   if (!state.srcB) {
-    state.srcB = state.sources.some((s) => s.id === "ecr") ? "ecr" : "proj";
+    state.srcB = state.sources.some((s) => s.id === "fp_ecr") ? "fp_ecr" : "proj";
   }
 
   container.innerHTML = `
@@ -173,7 +194,7 @@ function valueChip(score, delta) {
   if (pct === 0) return `<span class="delta-chip delta-zero">0%</span>`;
   const cls = pct > 0 ? "delta-pos" : "delta-neg";
   const magnitude = Math.abs(score) >= 0.3 ? " delta-big" : "";
-  const spots = delta !== null && delta !== undefined ? `<div class="tag-note" style="margin:2px 0 0;">${delta > 0 ? "+" : ""}${delta} spots</div>` : "";
+  const spots = delta !== null && delta !== undefined ? `<div class="tag-note value-spots" style="margin:2px 0 0;">${delta > 0 ? "+" : ""}${delta} spots</div>` : "";
   return `<span class="delta-chip ${cls}${magnitude}">${pct > 0 ? "+" : ""}${pct}%</span>${spots}`;
 }
 
@@ -190,6 +211,8 @@ function summaryStrip(nameA, nameB, rows) {
   const best = [...eligible].sort((a, b) => b.value_score - a.value_score).slice(0, 5).filter((r) => r.value_score > 0);
   const worst = [...eligible].sort((a, b) => a.value_score - b.value_score).slice(0, 5).filter((r) => r.value_score < 0);
 
+  const shortA = escapeHtml(shortSourceName(state.srcA));
+  const shortB = escapeHtml(shortSourceName(state.srcB));
   const rowHtml = (p) => `
     <div class="player-search-row">
       <div class="row-main">
@@ -197,7 +220,7 @@ function summaryStrip(nameA, nameB, rows) {
         <span style="min-width:0;">
           <strong>${escapeHtml(p.name)}</strong>
           <span class="pill pos-${escapeHtml(p.position)}">${escapeHtml(p.pos_rank ?? p.position)}</span>
-          <div class="tag-note">${nameA} #${p.rank_a} · ${nameB} #${p.rank_b}</div>
+          <div class="tag-note">${shortA} #${p.rank_a} · ${shortB} #${p.rank_b}</div>
         </span>
       </div>
       ${valueChip(p.value_score, null)}
@@ -227,28 +250,46 @@ function summaryStrip(nameA, nameB, rows) {
 function renderTable(container) {
   const target = container.querySelector("#rankings-table");
   sortRows();
-  const rows = state.rookiesOnly ? state.rows.filter((r) => r.rookie) : state.rows;
-
-  if (!rows.length) {
-    target.innerHTML = `<div class="empty-state">No players match this filter.</div>`;
-    return;
+  let rows = state.rookiesOnly ? state.rows.filter((r) => r.rookie) : state.rows;
+  // Outlier views: only players with a real disagreement, draftable range.
+  if (state.view !== "board") {
+    rows = rows.filter((r) =>
+      r.value_score !== null && r.value_score !== undefined && r.rank_a && r.rank_a <= 250);
   }
 
   const nameA = escapeHtml(sourceName(state.srcA));
   const nameB = escapeHtml(sourceName(state.srcB));
 
+  const viewBar = `
+    <div class="seg-tabs" style="margin-bottom:12px;">
+      <button class="seg ${state.view === "board" ? "active" : ""}" data-view="board">Full Board</button>
+      <button class="seg ${state.view === "values" ? "active" : ""}" data-view="values">💎 Ranked Too Low</button>
+      <button class="seg ${state.view === "landmines" ? "active" : ""}" data-view="landmines">💣 Ranked Too High</button>
+    </div>
+    ${state.view === "values" ? `<p class="tag-note" style="margin:0 0 10px;">Players ${nameA} ranks far below ${nameB} — the biggest steals when drafting on ${nameA}.</p>` : ""}
+    ${state.view === "landmines" ? `<p class="tag-note" style="margin:0 0 10px;">Players ${nameA} ranks far above ${nameB} — the biggest overpays when drafting on ${nameA}.</p>` : ""}
+  `;
+
+  if (!rows.length) {
+    target.innerHTML = `${viewBar}<div class="empty-state">No players match this filter.</div>`;
+    bindViewBar(container, target);
+    return;
+  }
+
+  const shortA = escapeHtml(shortSourceName(state.srcA));
+  const shortB = escapeHtml(shortSourceName(state.srcB));
   const header = COLUMNS.map((c) => {
     const arrow = state.sortKey === c.key ? `<span class="sort-arrow">${state.sortDir === 1 ? "▲" : "▼"}</span>` : "";
     let label = c.label;
-    if (c.key === "rank_a") label = `${nameA} Rank`;
-    if (c.key === "rank_b") label = `${nameB} Rank`;
-    if (c.key === "proj_points") label = `Proj ${formatLabel(state.format)} Pts`;
-    const cls = c.key === "perf_rank" ? ' class="col-hide-mobile"' : "";
+    if (c.key === "rank_a") label = shortA;
+    if (c.key === "rank_b") label = shortB;
+    const cls = c.key === "proj_points" ? ' class="col-hide-mobile"' : "";
     return `<th data-key="${c.key}"${cls}>${label} ${arrow}</th>`;
   }).join("");
 
-  // Tier dividers only make sense while rows are in ascending rank_a order (the default).
+  // Tier dividers only make sense on the full board in ascending rank_a order.
   const showTiers =
+    state.view === "board" &&
     state.sortKey === "rank_a" &&
     state.sortDir === 1 &&
     rows.some((r) => r.tier !== null && r.tier !== undefined);
@@ -257,24 +298,24 @@ function renderTable(container) {
   const rowsHtml = rows.map((p) => {
     let divider = "";
     if (showTiers && p.tier !== null && p.tier !== undefined && p.tier !== prevTier) {
-      divider = `<tr class="tier-divider"><td colspan="7">Tier ${escapeHtml(p.tier)}</td></tr>`;
+      divider = `<tr class="tier-divider"><td colspan="6">Tier ${escapeHtml(p.tier)}</td></tr>`;
       prevTier = p.tier;
     }
     return `${divider}
     <tr class="${rowTint(p.value_score)}">
-      <td style="font-weight:800;color:var(--text-dim);">${p.rank_a ?? "&mdash;"}</td>
       <td>${playerCell(p, `${escapeHtml(p.team)}${p.rookie ? " · <span style='color:var(--warning)'>Rookie</span>" : ""}`)}</td>
-      <td><span class="pill pos-${escapeHtml(p.position)}">${escapeHtml(p.pos_rank ?? p.position)}</span>${tierBadge(p.tier)}</td>
+      <td style="font-weight:800;color:var(--text-dim);">${p.rank_a ?? "&mdash;"}</td>
       <td style="font-weight:700;">${p.rank_b ?? "&mdash;"}</td>
       <td>${valueChip(p.value_score, p.delta)}</td>
-      <td>${fmtNum(p.proj_points?.[state.format])}</td>
-      <td class="col-hide-mobile">${p.perf_rank ? "#" + p.perf_rank : "&mdash;"}</td>
+      <td><span class="pill pos-${escapeHtml(p.position)}">${escapeHtml(p.pos_rank ?? p.position)}</span>${tierBadge(p.tier)}</td>
+      <td class="col-hide-mobile">${fmtNum(p.proj_points?.[state.format])}</td>
     </tr>
   `;
   }).join("");
 
   target.innerHTML = `
-    ${summaryStrip(nameA, nameB, rows)}
+    ${viewBar}
+    ${state.view === "board" ? summaryStrip(nameA, nameB, rows) : ""}
     <div class="table-wrap">
       <table>
         <thead><tr>${header}</tr></thead>
@@ -298,6 +339,26 @@ function renderTable(container) {
         state.sortDir *= -1;
       } else {
         state.sortKey = key;
+        state.sortDir = 1;
+      }
+      renderTable(container);
+    });
+  });
+  bindViewBar(container, target);
+}
+
+function bindViewBar(container, target) {
+  target.querySelectorAll(".seg[data-view]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      state.view = btn.dataset.view;
+      if (state.view === "values") {
+        state.sortKey = "value_score";
+        state.sortDir = -1; // biggest positive gap (ranked too low on A) first
+      } else if (state.view === "landmines") {
+        state.sortKey = "value_score";
+        state.sortDir = 1; // biggest negative gap (ranked too high on A) first
+      } else {
+        state.sortKey = "rank_a";
         state.sortDir = 1;
       }
       renderTable(container);

@@ -8,8 +8,8 @@ const boardFilters = { position: "ALL", search: "" };
 let roomViewSet = "";       // "" = the room's own draft board; else a site family/id
 let roomSources = [];       // [{id, name}] ranking families for the in-room switcher
 
-// Mobile draft-room tab (module state so it survives the re-render that
-// happens after every pick).
+// Draft-room tab, all screen sizes (module state so it survives the
+// re-render that happens after every pick).
 let roomMobileTab = "suggest";
 const ROOM_MOBILE_TABS = [
   { id: "suggest", label: "Suggest" },
@@ -332,7 +332,7 @@ function snakeBoardHtml(maxRounds = null) {
 
   return `
     <div class="snake-wrap">
-      <div class="snake-grid" style="grid-template-columns: 34px repeat(${teams}, minmax(86px, 1fr));">
+      <div class="snake-grid" style="--snake-teams:${teams};">
         ${cells}
       </div>
     </div>
@@ -365,46 +365,43 @@ async function renderRoom(container) {
       ${ROOM_MOBILE_TABS.map((t) => `<button class="seg ${roomMobileTab === t.id ? "active" : ""}" data-mobile-tab="${t.id}">${t.label}</button>`).join("")}
     </div>
 
-    <div class="draft-cockpit three">
-      <div class="cockpit-col" style="min-width:0;">
-        <div class="room-pane" data-pane="board">
-          <div class="card">
-            <h2>Draft Board</h2>
-            ${snakeBoardHtml(Math.min(draft.rounds, Math.max(draft.current_round + 1, 4)))}
-          </div>
-        </div>
-        <div class="room-pane" data-pane="players">
-          <div class="card">
-            <h2>All Available Players</h2>
-            <div class="controls">
-              <input type="text" id="avail-search" placeholder="Search players…" value="${escapeHtml(boardFilters.search)}" style="flex:1;max-width:300px;">
-              <select id="avail-position">
-                ${["ALL", "QB", "RB", "WR", "TE", "K", "DEF"].map((p) => `<option value="${p}" ${p === boardFilters.position ? "selected" : ""}>${p}</option>`).join("")}
-              </select>
-              <label style="flex-direction:row;align-items:center;gap:8px;">View by
-                <select id="avail-view"><option value="">Draft board (${escapeHtml(draft.ranking_set)})</option></select>
-              </label>
-            </div>
-            <div id="available-list" class="avail-grid cockpit-scroll"><div class="loading">Loading&hellip;</div></div>
-          </div>
-        </div>
+    <div class="room-pane" data-pane="suggest">
+      <div class="card">
+        <h2>Suggested Picks <span class="tag-note" style="font-weight:400;">values measured vs consensus (ECR)</span></h2>
+        <div id="avail-note"></div>
+        <div id="urgency-banner"></div>
+        <div id="suggestions-panel" class="grid-3"><div class="loading">Loading&hellip;</div></div>
+        <div id="position-values" style="margin-top:12px;"></div>
       </div>
+    </div>
 
-      <div class="room-pane" data-pane="suggest">
-        <div class="card cockpit-scroll">
-          <h2>Suggested Picks <span class="tag-note" style="font-weight:400;">values measured vs consensus (ECR)</span></h2>
-          <div id="avail-note"></div>
-          <div id="urgency-banner"></div>
-          <div id="suggestions-panel" class="grid-3"><div class="loading">Loading&hellip;</div></div>
-          <div id="position-values" style="margin-top:12px;"></div>
-        </div>
+    <div class="room-pane" data-pane="board">
+      <div class="card">
+        <h2>Draft Board</h2>
+        ${snakeBoardHtml(Math.min(draft.rounds, Math.max(draft.current_round + 1, 4)))}
       </div>
+    </div>
 
-      <div class="room-pane" data-pane="team">
-        <div class="card cockpit-scroll">
-          <h2>Your Team</h2>
-          <div id="lineup-panel"></div>
+    <div class="room-pane" data-pane="team">
+      <div class="card">
+        <h2>Your Team</h2>
+        <div id="lineup-panel"></div>
+      </div>
+    </div>
+
+    <div class="room-pane" data-pane="players">
+      <div class="card">
+        <h2>All Available Players</h2>
+        <div class="controls">
+          <input type="text" id="avail-search" placeholder="Search players…" value="${escapeHtml(boardFilters.search)}" style="flex:1;max-width:300px;">
+          <select id="avail-position">
+            ${["ALL", "QB", "RB", "WR", "TE", "K", "DEF"].map((p) => `<option value="${p}" ${p === boardFilters.position ? "selected" : ""}>${p}</option>`).join("")}
+          </select>
+          <label style="flex-direction:row;align-items:center;gap:8px;">View by
+            <select id="avail-view"><option value="">Draft board (${escapeHtml(draft.ranking_set)})</option></select>
+          </label>
         </div>
+        <div id="available-list" class="avail-grid cockpit-scroll"><div class="loading">Loading&hellip;</div></div>
       </div>
     </div>
   `;

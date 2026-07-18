@@ -122,7 +122,12 @@ async def compare_rankings(
     except KeyError:
         raise HTTPException(404, f"ranking set {set_b} not found")
     except Exception:
-        raise HTTPException(502, "comparison ranking source unavailable")
+        if compare is None:  # default live FantasyPros ECR unreachable -> local fallbacks
+            set_b = (rankings_store.ECR_SET_ID if rankings_store.ecr_available()
+                     else f"proj_{format}")
+            ranks_b = await _resolve_ranks(set_b)
+        else:
+            raise HTTPException(502, "comparison ranking source unavailable")
 
     players = await dataset.build_dataset()
     by_id = {p["id"]: p for p in players}

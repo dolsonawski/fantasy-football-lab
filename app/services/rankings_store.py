@@ -116,20 +116,10 @@ def _load_ecr() -> dict:
 
 
 async def list_sets(user_id: str | None = None) -> list[dict]:
-    sets = []
-    if ecr_available():
-        meta = _load_ecr()
-        sets.append(
-            {
-                "id": ECR_SET_ID,
-                "name": "FantasyPros ECR",
-                "source": "ecr",
-                "format": None,
-                "player_count": len(meta.get("ranks", [])),
-                "updated_at": meta.get("updated_at"),
-            }
-        )
-    sets += [
+    # Only the live auto-pulled FantasyPros board is listed; the uploaded/seed
+    # ECR file (ECR_SET_ID) still exists but purely as a fallback reference,
+    # so users don't see two near-identical "FantasyPros ECR" entries.
+    sets = [
         {"id": sid, "name": name, "source": "fp_ecr", "format": fmt}
         for sid, (name, fmt) in FP_ECR_SETS.items()
     ]
@@ -328,26 +318,23 @@ def preferred_set_for_format(fmt: str) -> str:
 
 
 def preferred_compare_set_for_format(fmt: str) -> str:
-    """Reference of record: uploaded/seed ECR when loaded, else the
-    auto-pulled FantasyPros ECR for the format, else projections."""
-    if ecr_available():
-        return ECR_SET_ID
+    """Reference of record: the live auto-pulled FantasyPros ECR."""
     return f"fp_ecr_{fmt}"
 
 
 async def reference_ranks(fmt: str) -> dict[str, int]:
     """The consensus reference board used for draft-room values and slip
-    analysis. Prefers uploaded/seed ECR, then auto FantasyPros ECR for the
-    format, then the projections board — falling through on any failure."""
+    analysis. Prefers the live FantasyPros ECR, then the uploaded/seed ECR
+    file, then the projections board — falling through on any failure."""
+    try:
+        return await get_ranks(f"fp_ecr_{fmt}")
+    except Exception:
+        pass
     if ecr_available():
         try:
             return await get_ranks(ECR_SET_ID)
         except Exception:
             pass
-    try:
-        return await get_ranks(f"fp_ecr_{fmt}")
-    except Exception:
-        pass
     return await get_ranks(f"proj_{fmt}")
 
 

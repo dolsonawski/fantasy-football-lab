@@ -30,7 +30,7 @@ async def list_players(
 
 # Boards to show side-by-side in a player's detail card (label -> set-id template).
 _DETAIL_BOARDS = [
-    ("ECR", "ecr"),
+    ("ECR", "fp_ecr_{fmt}"),
     ("ESPN", "espn_rank_{fmt}"),
     ("Sleeper", "sleeper_adp_{fmt}"),
     ("FFC ADP", "adp_{fmt}"),

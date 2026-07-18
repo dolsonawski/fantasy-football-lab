@@ -66,12 +66,12 @@ export async function renderImport(container) {
 
     <div class="grid-2">
       <div class="card">
-        <h2>ECR Reference Board</h2>
+        <h2>ECR Fallback Board</h2>
         <p class="tag-note" style="margin:0 0 10px;">
-          The consensus board the whole app measures value against — draft-room value picks, slip analysis,
-          and the default rankings comparison. Refresh it anytime with a current FantasyPros export.
+          The app now pulls FantasyPros ECR automatically. An export uploaded here is only used as the
+          fallback reference if the live pull is ever unavailable.
         </p>
-        <p class="tag-note" style="margin:0 0 10px;">This board is shared by everyone on the site — updating it replaces the reference for all users.</p>
+        <p class="tag-note" style="margin:0 0 10px;">This fallback is shared by everyone on the site — updating it replaces it for all users.</p>
         <div class="controls" style="flex-direction:column;align-items:stretch;">
           <label>FantasyPros rankings export (.csv / .xlsx)
             <input type="file" id="ecr-file" accept=".csv,.xlsx,.xlsm">
