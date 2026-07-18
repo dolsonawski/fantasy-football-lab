@@ -1,5 +1,5 @@
 import { api } from "../api.js";
-import { escapeHtml, posPill, fmtNum, formatLabel, debounce } from "../util.js";
+import { escapeHtml, posPill, fmtNum, formatLabel, debounce, toast } from "../util.js";
 
 const state = {
   format: "ppr",
@@ -90,7 +90,7 @@ export async function renderTrade(container) {
 
   container.querySelector("#tr-analyze").addEventListener("click", async () => {
     if (!state.aSends.length || !state.bSends.length) {
-      alert("Both sides need at least one player.");
+      toast("Both sides need at least one player.", "error");
       return;
     }
     const body = {
@@ -155,7 +155,7 @@ async function suggestTrades(container) {
           <div class="match-card">
             <div style="flex:1;min-width:0;">
               <div style="font-weight:700;margin-bottom:3px;">vs ${escapeHtml(p.partner_team_name)}
-                <span class="delta-chip ${p.winner === "Team B" ? "delta-neg" : "delta-pos"}" style="font-size:11px;">${escapeHtml(p.verdict.split("—")[0].split("(")[0].trim())}</span>
+                <span class="delta-chip ${p.winner_side === "Team B" ? "delta-neg" : "delta-pos"}" style="font-size:11px;">${escapeHtml(p.verdict_label)}</span>
               </div>
               <div style="font-size:13.5px;">
                 You send <strong>${escapeHtml(p.you_send.player.name)}</strong> (${p.you_send.position})
@@ -204,7 +204,7 @@ async function showTeamRoster(container, key, teamId) {
     <div style="max-height:260px;overflow-y:auto;">
       ${roster.map((p) => `
         <div class="player-search-row">
-          <div>${posPill(p.position)} ${escapeHtml(p.name)} <span class="tag-note">${fmtNum(p.proj_points[state.format], 0)} proj</span></div>
+          <div>${posPill(p.position)} <span class="player-clickable" data-player-id="${p.id}" data-player-format="${state.format}">${escapeHtml(p.name)}</span> <span class="tag-note">${fmtNum(p.proj_points[state.format], 0)} proj</span></div>
           <button data-pid="${p.id}" data-name="${escapeHtml(p.name)}" data-pos="${p.position}">Send</button>
         </div>
       `).join("")}
@@ -268,7 +268,7 @@ function wireSide(container, key, stateKey) {
     const data = await api.listPlayers({ search: q, limit: "6" });
     resultsEl.innerHTML = data.players.map((p) => `
       <div class="player-search-row">
-        <div>${posPill(p.position)} ${escapeHtml(p.name)} <span class="tag-note">${escapeHtml(p.team)}</span></div>
+        <div>${posPill(p.position)} <span class="player-clickable" data-player-id="${p.id}" data-player-format="${state.format}">${escapeHtml(p.name)}</span> <span class="tag-note">${escapeHtml(p.team)}</span></div>
         <button data-pid="${p.id}" data-name="${escapeHtml(p.name)}" data-pos="${p.position}">Add</button>
       </div>
     `).join("") || `<div class="empty-state">No matches.</div>`;
@@ -293,7 +293,7 @@ function verdictClass(data) {
 function sideValueBlock(label, players, value) {
   const rows = players.map((p) => `
     <div class="slot-row">
-      <span>${posPill(p.position)} ${escapeHtml(p.name)}</span>
+      <span>${posPill(p.position)} <span class="player-clickable" data-player-id="${p.id}" data-player-format="${state.format}">${escapeHtml(p.name)}</span></span>
       <span class="tag-note">${fmtNum(p.proj_points[value.__fmt])} proj pts &middot; ${fmtNum(p.proj_vbd[value.__fmt])} VBD</span>
     </div>
   `).join("");

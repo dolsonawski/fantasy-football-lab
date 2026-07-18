@@ -1,5 +1,5 @@
 import { api } from "../api.js";
-import { escapeHtml, posPill, fmtNum, formatLabel, debounce, avatar } from "../util.js";
+import { escapeHtml, posPill, fmtNum, formatLabel, debounce, avatar, toast, availabilityChip, confirmModal } from "../util.js";
 
 let draft = null;
 let gradeData = null;
@@ -24,13 +24,13 @@ function syncTopbarOffset() {
   if (topbar) document.documentElement.style.setProperty("--topbar-h", `${topbar.offsetHeight}px`);
 }
 
-const RANK_FAMILY_RE = /^(adp|sleeper_adp|sleeper_dynasty|espn_rank|espn_adp|proj|computed)$/;
+const RANK_FAMILY_RE = /^(adp|sleeper_adp|sleeper_dynasty|espn_rank|espn_adp|fp_ecr|proj|computed)$/;
 
 function rankingFamilies(sets) {
   const families = [];
   const seen = new Set();
   for (const s of sets) {
-    const m = s.id.match(/^(adp|sleeper_adp|sleeper_dynasty|espn_rank|espn_adp|proj|computed)_(standard|half_ppr|ppr)$/);
+    const m = s.id.match(/^(adp|sleeper_adp|sleeper_dynasty|espn_rank|espn_adp|fp_ecr|proj|computed)_(standard|half_ppr|ppr)$/);
     if (m) {
       if (!seen.has(m[1])) {
         seen.add(m[1]);
@@ -214,7 +214,7 @@ async function renderSetup(container) {
     };
     const src = container.querySelector("#ds-set").value;
     // Family sources resolve against the chosen format; imported ids pass through.
-    body.ranking_set = /^(adp|sleeper_adp|sleeper_dynasty|espn_rank|espn_adp|proj|computed)$/.test(src)
+    body.ranking_set = /^(adp|sleeper_adp|sleeper_dynasty|espn_rank|espn_adp|fp_ecr|proj|computed)$/.test(src)
       ? `${src}_${body.format}`
       : src;
     const roster = rosterInputs();
@@ -229,7 +229,7 @@ async function renderSetup(container) {
     } catch (err) {
       btn.textContent = "Start Mock Draft";
       btn.disabled = false;
-      alert(err.message || "Failed to start draft");
+      toast(err.message || "Failed to start draft", "error");
     }
   });
 }
@@ -279,7 +279,7 @@ async function loadHistory(container) {
   });
   target.querySelectorAll("button[data-del]").forEach((btn) => {
     btn.addEventListener("click", async () => {
-      if (!confirm("Delete this draft from history?")) return;
+      if (!(await confirmModal("Delete this draft from history?"))) return;
       await api.deleteDraftHistory(btn.dataset.del);
       await loadHistory(container);
     });
@@ -319,7 +319,7 @@ function snakeBoardHtml(maxRounds = null) {
         const first = pick.name.split(" ")[0];
         const short = pick.name.length > 15 ? `${first[0]}. ${last}` : pick.name;
         cells += `
-          <div class="snake-cell pos-${pick.position} ${isUserCol ? "user-col" : ""}" title="${escapeHtml(pick.name)} — pick ${pick.pick_no} (rank #${pick.draft_rank})">
+          <div class="snake-cell pos-${pick.position} player-clickable ${isUserCol ? "user-col" : ""}" data-player-id="${pick.player_id}" data-player-format="${draft.format}" title="${escapeHtml(pick.name)} — pick ${pick.pick_no} (rank #${pick.draft_rank})">
             <span class="c-name">${escapeHtml(short)}</span>
             <span class="c-meta">${pick.position} · ${escapeHtml(pick.nfl_team)} · #${pick.pick_no}</span>
           </div>`;
@@ -365,43 +365,46 @@ async function renderRoom(container) {
       ${ROOM_MOBILE_TABS.map((t) => `<button class="seg ${roomMobileTab === t.id ? "active" : ""}" data-mobile-tab="${t.id}">${t.label}</button>`).join("")}
     </div>
 
-    <div class="room-grid">
+    <div class="draft-cockpit three">
+      <div class="cockpit-col" style="min-width:0;">
+        <div class="room-pane" data-pane="board">
+          <div class="card">
+            <h2>Draft Board</h2>
+            ${snakeBoardHtml(Math.min(draft.rounds, Math.max(draft.current_round + 1, 4)))}
+          </div>
+        </div>
+        <div class="room-pane" data-pane="players">
+          <div class="card">
+            <h2>All Available Players</h2>
+            <div class="controls">
+              <input type="text" id="avail-search" placeholder="Search players…" value="${escapeHtml(boardFilters.search)}" style="flex:1;max-width:300px;">
+              <select id="avail-position">
+                ${["ALL", "QB", "RB", "WR", "TE", "K", "DEF"].map((p) => `<option value="${p}" ${p === boardFilters.position ? "selected" : ""}>${p}</option>`).join("")}
+              </select>
+              <label style="flex-direction:row;align-items:center;gap:8px;">View by
+                <select id="avail-view"><option value="">Draft board (${escapeHtml(draft.ranking_set)})</option></select>
+              </label>
+            </div>
+            <div id="available-list" class="avail-grid cockpit-scroll"><div class="loading">Loading&hellip;</div></div>
+          </div>
+        </div>
+      </div>
+
       <div class="room-pane" data-pane="suggest">
-        <div class="card">
+        <div class="card cockpit-scroll">
           <h2>Suggested Picks <span class="tag-note" style="font-weight:400;">values measured vs consensus (ECR)</span></h2>
+          <div id="avail-note"></div>
           <div id="urgency-banner"></div>
           <div id="suggestions-panel" class="grid-3"><div class="loading">Loading&hellip;</div></div>
           <div id="position-values" style="margin-top:12px;"></div>
         </div>
       </div>
+
       <div class="room-pane" data-pane="team">
-        <div class="card">
+        <div class="card cockpit-scroll">
           <h2>Your Team</h2>
           <div id="lineup-panel"></div>
         </div>
-      </div>
-    </div>
-
-    <div class="room-pane" data-pane="board">
-      <div class="card">
-        <h2>Draft Board</h2>
-        ${snakeBoardHtml(Math.min(draft.rounds, Math.max(draft.current_round + 1, 4)))}
-      </div>
-    </div>
-
-    <div class="room-pane" data-pane="players">
-      <div class="card">
-        <h2>All Available Players</h2>
-        <div class="controls">
-          <input type="text" id="avail-search" placeholder="Search players…" value="${escapeHtml(boardFilters.search)}" style="flex:1;max-width:300px;">
-          <select id="avail-position">
-            ${["ALL", "QB", "RB", "WR", "TE", "K", "DEF"].map((p) => `<option value="${p}" ${p === boardFilters.position ? "selected" : ""}>${p}</option>`).join("")}
-          </select>
-          <label style="flex-direction:row;align-items:center;gap:8px;">View by
-            <select id="avail-view"><option value="">Draft board (${escapeHtml(draft.ranking_set)})</option></select>
-          </label>
-        </div>
-        <div id="available-list" class="avail-grid"><div class="loading">Loading&hellip;</div></div>
       </div>
     </div>
   `;
@@ -454,7 +457,7 @@ function suggestionCard(title, players, extra) {
             <span class="rank-chip">#${p.draft_rank ?? "—"}</span>
             ${avatar(p, 26)}
             <span style="min-width:0;">
-              <strong>${escapeHtml(p.name)}</strong> ${posPill(p.position)}
+              <strong class="player-clickable" data-player-id="${p.id}" data-player-format="${draft.format}" title="Player detail & news">${escapeHtml(p.name)}</strong> ${posPill(p.position)}${availabilityChip(p.availability)}
               ${extra && extra(p) ? `<div class="tag-note">${escapeHtml(extra(p))}</div>` : ""}
             </span>
           </div>
@@ -470,6 +473,13 @@ async function loadSuggestions(container) {
   if (!panel) return;
   const sug = await api.draftSuggestions(draft.id);
   if (sug.complete) { panel.innerHTML = ""; return; }
+
+  const availNote = container.querySelector("#avail-note");
+  if (availNote) {
+    availNote.innerHTML = sug.picks_until_next > 0
+      ? `<p class="tag-note" style="margin:2px 0 8px;">Availability = chance the player is still on the board at your next pick (~${sug.picks_until_next} picks away).</p>`
+      : "";
+  }
 
   const banner = container.querySelector("#urgency-banner");
   if (banner) {
@@ -505,18 +515,21 @@ async function loadSuggestions(container) {
     posPanel.innerHTML = `
       <h3>Ideal Value by Position</h3>
       <div class="pos-value-strip">
-        ${sug.by_position.map((p) => `
+        ${sug.by_position.map((p) => {
+          const chip = availabilityChip(p.availability);
+          return `
           <div class="pos-value-card pos-border-${p.position}">
             <div style="display:flex;align-items:center;gap:8px;">
               ${avatar(p, 26)}
               <div style="min-width:0;">
-                <div style="font-weight:750;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(p.name)}</div>
-                <div class="tag-note" style="margin:0;">${posPill(p.position)} ECR #${p.ref_rank ?? "—"}${p.value_fall > 0 ? ` · <span class="value-pos">+${p.value_fall} value</span>` : ""}</div>
+                <div class="player-clickable" data-player-id="${p.id}" data-player-format="${draft.format}" title="Player detail & news" style="font-weight:750;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(p.name)}</div>
+                <div class="tag-note" style="margin:0;">${posPill(p.position)} ECR #${p.ref_rank ?? "—"}${p.value_fall > 0 ? ` · <span class="value-pos">+${p.value_fall} value</span>` : ""}${chip ? ` · ${chip}` : ""}</div>
               </div>
             </div>
             <button data-pid="${p.id}" ${draft.is_user_turn ? "" : "disabled"}>Draft</button>
           </div>
-        `).join("")}
+          `;
+        }).join("")}
       </div>
     `;
     posPanel.querySelectorAll("button[data-pid]").forEach((btn) => {
@@ -534,7 +547,7 @@ async function makePick(container, btn) {
     draft = await api.makeDraftPick(draft.id, btn.dataset.pid);
     await renderDraft(container);
   } catch (err) {
-    alert(err.message || "Pick failed");
+    toast(err.message || "Pick failed", "error");
     await renderDraft(container);
   }
 }
@@ -568,7 +581,7 @@ async function loadAvailable(container) {
         <span class="rank-chip">#${rank ?? "—"}</span>
         ${avatar(p, 26)}
         <span style="min-width:0;">
-          <strong class="player-clickable" data-player-id="${p.id}" data-player-format="${draft.format}" title="Player detail & news">${escapeHtml(p.name)}</strong> ${posPill(p.position)}
+          <strong class="player-clickable" data-player-id="${p.id}" data-player-format="${draft.format}" title="Player detail & news">${escapeHtml(p.name)}</strong> ${posPill(p.position)}${availabilityChip(p.availability)}
           <span class="tag-note">${escapeHtml(p.team)}${p.rookie ? " · Rookie" : ""} · ${fmtNum(p.proj_points[draft.format])} proj${viewSet ? ` · board #${p.draft_rank ?? "—"}` : ""}</span>
         </span>
       </div>
@@ -589,7 +602,7 @@ function slotRow(slotName, p) {
         <span class="slot-player">
           ${avatar(p, 24)}
           ${posPill(p.position)}
-          <span class="p-name">${escapeHtml(p.name)}</span>
+          <span class="p-name player-clickable" data-player-id="${p.id}" data-player-format="${draft.format}" title="Player detail & news">${escapeHtml(p.name)}</span>
         </span>
         <span class="slot-pts">${fmtNum(p.proj_points[draft.format], 0)}</span>
       ` : `<span class="empty">empty</span>`}

@@ -58,3 +58,81 @@ export function playerCell(p, sub = "") {
     </span>
   `;
 }
+
+// Floating toast notifications. Container is created lazily on first use.
+export function toast(message, type = "error", ms = 4000) {
+  let wrap = document.getElementById("toast-wrap");
+  if (!wrap) {
+    wrap = document.createElement("div");
+    wrap.id = "toast-wrap";
+    wrap.className = "toast-wrap";
+    document.body.appendChild(wrap);
+  }
+  const el = document.createElement("div");
+  const cls = ["error", "success", "info"].includes(type) ? type : "error";
+  el.className = `toast ${cls}`;
+  el.innerHTML = escapeHtml(message);
+  const dismiss = () => {
+    if (!el.isConnected) return;
+    el.remove();
+    if (!wrap.childElementCount) wrap.remove();
+  };
+  el.addEventListener("click", dismiss);
+  wrap.appendChild(el);
+  if (ms > 0) setTimeout(dismiss, ms);
+  return el;
+}
+
+// Styled confirm dialog reusing the .pd-overlay/.pd-modal look. Resolves
+// true on OK, false on cancel / backdrop click / Escape.
+export function confirmModal(message, opts = {}) {
+  const okLabel = opts.okLabel ?? "Delete";
+  const cancelLabel = opts.cancelLabel ?? "Cancel";
+  return new Promise((resolve) => {
+    const overlay = document.createElement("div");
+    overlay.className = "pd-overlay";
+    overlay.innerHTML = `
+      <div class="pd-modal confirm-modal" role="dialog" aria-modal="true" style="max-width:420px;">
+        <div class="pd-body">
+          <div class="confirm-msg">${escapeHtml(message)}</div>
+          <div class="confirm-actions">
+            <button class="secondary" data-confirm="cancel">${escapeHtml(cancelLabel)}</button>
+            <button class="danger" data-confirm="ok">${escapeHtml(okLabel)}</button>
+          </div>
+        </div>
+      </div>
+    `;
+    let done = false;
+    const close = (result) => {
+      if (done) return;
+      done = true;
+      document.removeEventListener("keydown", onKey);
+      overlay.remove();
+      resolve(result);
+    };
+    const onKey = (e) => { if (e.key === "Escape") close(false); };
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) close(false);
+      const btn = e.target.closest("[data-confirm]");
+      if (btn) close(btn.getAttribute("data-confirm") === "ok");
+    });
+    document.addEventListener("keydown", onKey);
+    document.body.appendChild(overlay);
+    const ok = overlay.querySelector('[data-confirm="ok"]');
+    if (ok) ok.focus();
+  });
+}
+
+// Availability chip: chance a player is still on the board at your next pick.
+export function availabilityChip(pct) {
+  if (pct === null || pct === undefined) return "";
+  const n = Number(pct);
+  const cls = n >= 66 ? "avail-high" : n >= 33 ? "avail-mid" : "avail-low";
+  return `<span class="avail-chip ${cls}" title="Chance still available at your next pick">${Math.round(n)}%</span>`;
+}
+
+// Tier badge: tiny 'T#' pill; empty string when tier is null/undefined.
+export function tierBadge(tier) {
+  if (tier === null || tier === undefined) return "";
+  return `<span class="tier-badge">T${escapeHtml(tier)}</span>`;
+}

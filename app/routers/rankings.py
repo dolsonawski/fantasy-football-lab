@@ -33,8 +33,12 @@ async def delete_ranking_set(set_id: str, user: dict = Depends(current_user)):
 
 
 @router.post("/ecr")
-async def upload_ecr(file: UploadFile = File(...)):
-    """Replace the app's ECR reference board with a FantasyPros export."""
+async def upload_ecr(file: UploadFile = File(...), user: dict = Depends(current_user)):
+    """Replace the app's ECR reference board with a FantasyPros export.
+
+    Auth-gated so anonymous callers can't overwrite the reference board; note
+    the board is still shared site-wide (any signed-in user replaces it for
+    everyone)."""
     content = await file.read()
     if len(content) > MAX_UPLOAD_BYTES:
         raise HTTPException(400, "file too large (10 MB max)")
@@ -136,6 +140,13 @@ async def compare_rankings(
     ranked_ids_a = [pid for pid, _ in sorted(ranks_a.items(), key=lambda kv: kv[1])]
     pos_ranks = _position_ranks(ranked_ids_a, by_id, entries_by_id)
 
+    # Per-row FantasyPros/expert tier from the row-order board, when it carries
+    # tiers (uploaded ECR, imported, or auto fp_ecr sets); {} otherwise.
+    try:
+        tiers = await rankings_store.tiers_for_set(set_a)
+    except Exception:
+        tiers = {}
+
     def adp_value(p: dict | None, entry: dict) -> float | None:
         if entry.get("adp") is not None:
             return entry["adp"]
@@ -167,6 +178,7 @@ async def compare_rankings(
                 "delta": (rank_b - rank_a) if rank_a is not None and rank_b is not None else None,
                 "value_score": value_score(rank_a, rank_b),
                 "perf_rank": p["rank_overall"][format] if any(v > 0 for v in p["points"].values()) else None,
+                "tier": tiers.get(p["id"]),
             }
         )
 
@@ -191,6 +203,7 @@ async def compare_rankings(
                     "perf_rank": None,
                     "market_rank": None,
                     "rookie": True,
+                    "tier": tiers.get(pid),
                 }
             )
 

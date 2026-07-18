@@ -118,6 +118,8 @@ async def find_matches(league: dict, my_team_id: str, fmt: str, limit: int = 4) 
                 ),
                 "verdict": analysis["verdict"],
                 "winner": analysis["winner"],
+                "winner_side": analysis["winner"],
+                "verdict_label": trade_analyzer.fairness_label(analysis["imbalance_pct"]),
                 "imbalance_pct": analysis["imbalance_pct"],
                 "your_grade_before": analysis.get("team_a_roster_impact", {}).get("before", {}).get("grade"),
                 "your_grade_after": analysis.get("team_a_roster_impact", {}).get("after", {}).get("grade"),

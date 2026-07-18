@@ -744,3 +744,118 @@ main#app { padding-left: max(28px, env(safe-area-inset-left)); padding-right: ma
 @media (max-width: 760px) {
   #back-to-top.visible { display: flex; opacity: 1; pointer-events: auto; }
 }
+
+/* ============================================================ shared foundations
+   (Task B: toasts, confirm modal, availability chips, tier badges/dividers,
+   draft cockpit layout, page head, mobile tap targets). */
+
+/* ---- toasts ------------------------------------------------ */
+.toast-wrap {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toast {
+  max-width: 320px;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  border: 1px solid var(--border-light);
+  border-left-width: 3px;
+  box-shadow: var(--shadow);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  animation: toast-in 0.2s ease-out;
+}
+.toast.error { border-left-color: var(--danger); }
+.toast.success { border-left-color: var(--accent); }
+.toast.info { border-left-color: var(--accent-2); }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- confirm modal (reuses .pd-overlay / .pd-modal) -------- */
+.confirm-modal .confirm-msg { font-size: 14.5px; font-weight: 650; line-height: 1.45; }
+.confirm-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+
+/* ---- availability chips ------------------------------------ */
+.avail-chip {
+  display: inline-block;
+  min-width: 40px;
+  text-align: center;
+  padding: 2px 7px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+.avail-chip.avail-high { background: rgba(47, 215, 133, 0.16); color: var(--accent); box-shadow: inset 0 0 0 1px rgba(47, 215, 133, 0.35); }
+.avail-chip.avail-mid { background: rgba(255, 197, 85, 0.15); color: var(--warning); box-shadow: inset 0 0 0 1px rgba(255, 197, 85, 0.32); }
+.avail-chip.avail-low { background: rgba(255, 107, 107, 0.14); color: var(--danger); box-shadow: inset 0 0 0 1px rgba(255, 107, 107, 0.3); }
+
+/* ---- tier badge + tier divider row ------------------------- */
+.tier-badge {
+  display: inline-block;
+  background: var(--surface-3);
+  color: var(--text-faint);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 6px;
+  padding: 1px 6px;
+}
+tr.tier-divider td {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  background: var(--surface-2);
+  border-top: 1px solid rgba(47, 215, 133, 0.25);
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* ---- draft cockpit (desktop layout; mobile keeps .room-pane tabs) ----
+   All rules are guarded by min-width so nothing applies at <=760px. */
+@media (min-width: 761px) {
+  .draft-cockpit { display: grid; gap: 16px; align-items: start; }
+}
+@media (min-width: 1100px) {
+  .draft-cockpit { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+}
+@media (min-width: 1350px) {
+  .draft-cockpit.three { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 0.9fr); }
+}
+@media (min-width: 761px) {
+  .cockpit-scroll { max-height: calc(100vh - 210px); overflow: auto; }
+}
+
+/* ---- page head ------------------------------------------- */
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+/* ---- rankings summary details ---------------------------- */
+.rankings-summary-details summary { cursor: pointer; font-weight: 700; }
+
+/* ---- mobile tap targets (do not enlarge desktop) --------- */
+@media (max-width: 760px) {
+  button, .seg, nav.tabs a { min-height: 44px; }
+  .player-search-row button,
+  .pos-value-card button,
+  .suggestion-card button { min-height: 40px; }
+}

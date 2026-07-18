@@ -12,6 +12,7 @@ strengths/weaknesses, and per-pick "slip" analysis).
 from __future__ import annotations
 
 import json
+import math
 import random
 import time
 import uuid
@@ -175,9 +176,8 @@ def _current_round(draft: dict) -> int:
     return (draft["current_pick_index"] // draft["teams"]) + 1
 
 
-def _need_multiplier(team_players: list[dict], position: str, current_round: int, total_rounds: int,
-                     config: dict | None = None) -> float:
-    counts = roster_rules.position_counts(team_players)
+def _need_multiplier_from_counts(counts: dict[str, int], position: str, current_round: int,
+                                 total_rounds: int, config: dict | None = None) -> float:
     slots = roster_rules.starter_slots(config)
 
     if position in ("K", "DEF"):
@@ -198,30 +198,145 @@ def _need_multiplier(team_players: list[dict], position: str, current_round: int
     return 0.45
 
 
+def _need_multiplier(team_players: list[dict], position: str, current_round: int, total_rounds: int,
+                     config: dict | None = None) -> float:
+    return _need_multiplier_from_counts(
+        roster_rules.position_counts(team_players), position, current_round, total_rounds, config
+    )
+
+
+def _temperature(rnd: int) -> float:
+    """Softmax temperature by round: sharp early (near-BPA), flatter late."""
+    if rnd <= 2:
+        return 1.5
+    if rnd <= 5:
+        return 3.0
+    return 6.0
+
+
+def _softmax_pick(candidates: list[tuple[float, object]], rnd: int) -> object:
+    """Given (effective_rank, item) pairs, pick one with a rank-gap-aware
+    softmax. `candidates` need not be pre-sorted; lower effective_rank is
+    better. Returns the chosen item."""
+    ordered = sorted(candidates, key=lambda c: c[0])[: min(8, len(candidates))]
+    eff_best = ordered[0][0]
+    tau = _temperature(rnd)
+    weights = [math.exp(-(eff - eff_best) / tau) for eff, _ in ordered]
+    return random.choices([item for _, item in ordered], weights=weights, k=1)[0]
+
+
 def _choose_ai_player(draft: dict, players_by_id: dict[str, dict], team: int) -> dict:
     available = [players_by_id[pid] for pid in draft["available_ids"]]
     team_players = [players_by_id[pid] for pid in draft["rosters"][str(team)]]
     rnd = _current_round(draft)
-    pool_size = len(draft["ranks"]) + 50
 
-    scored = []
+    # Effective rank = board rank scaled down by positional need (need makes a
+    # player's effective rank better). Ranking on rank-gaps instead of raw
+    # board value keeps early rounds close to best-player-available, which cuts
+    # unrealistic early "fallers".
+    scored: list[tuple[float, dict]] = []
     for p in available:
         mult = _need_multiplier(team_players, p["position"], rnd, draft["rounds"], draft.get("roster_config"))
         if mult <= 0:
             continue
-        board_value = max(pool_size - _rank_of(draft, p["id"]), 1)
-        scored.append((board_value * mult, p))
+        scored.append((_rank_of(draft, p["id"]) / mult, p))
 
     if not scored:  # e.g. only K/DEF left
-        scored = [
-            (max(pool_size - _rank_of(draft, p["id"]), 1), p)
-            for p in available
-        ]
+        scored = [(float(_rank_of(draft, p["id"])), p) for p in available]
 
-    scored.sort(key=lambda x: -x[0])
-    top = scored[:5]
-    weights = [s for s, _ in top]
-    return random.choices([p for _, p in top], weights=weights, k=1)[0]
+    return _softmax_pick(scored, rnd)
+
+
+def _availability_window(draft: dict) -> tuple[int, list[int]]:
+    """The picks between now and the user's NEXT pick, made by non-user teams.
+
+    Returns (start_index, window_teams). window_teams may be empty (user has no
+    further pick, or is the only remaining picker)."""
+    order = draft["order"]
+    cur = draft["current_pick_index"]
+    slot = draft["user_slot"]
+
+    occ = [i for i in range(cur, len(order)) if order[i] == slot]
+    if occ and occ[0] == cur:  # user is on the clock now -> window is until next slot
+        start = cur + 1
+        end = occ[1] if len(occ) > 1 else len(order)
+    else:  # user not on the clock -> window is up to their next slot
+        start = cur
+        end = occ[0] if occ else len(order)
+    return start, order[start:end]
+
+
+def _run_availability_sim(draft: dict, players_by_id: dict[str, dict], sims: int) -> dict[str, int]:
+    """Monte-Carlo the picks between now and the user's next pick to estimate
+    how often each currently-available player survives. See _availability_map."""
+    start, window_teams = _availability_window(draft)  # all non-user teams
+    if not window_teams:
+        return {}
+
+    # Only the realistic pick candidates get simulated; anything ranked deeper
+    # is treated as ~100% available (missing from the map).
+    board_order = sorted(draft["available_ids"], key=lambda pid: _rank_of(draft, pid))[:120]
+    survive = {pid: 0 for pid in board_order}
+    total_teams = draft["teams"]
+    rounds = draft["rounds"]
+    config = draft.get("roster_config")
+
+    for _ in range(sims):
+        local_avail = list(board_order)
+        counts = {
+            team: dict(
+                roster_rules.position_counts(
+                    [players_by_id[pid] for pid in draft["rosters"][str(team)]]
+                )
+            )
+            for team in set(window_teams)
+        }
+        for pick_i, team in enumerate(window_teams, start=start):
+            rnd = (pick_i // total_teams) + 1
+            viable: list[tuple[float, str]] = []
+            for pid in local_avail:  # rank-sorted, so best come first
+                pos = players_by_id[pid]["position"]
+                mult = _need_multiplier_from_counts(counts[team], pos, rnd, rounds, config)
+                if mult <= 0:
+                    continue
+                viable.append((_rank_of(draft, pid) / mult, pid))
+                if len(viable) >= 12:  # bound the scan; list is rank-ordered
+                    break
+            if not viable:
+                picked = local_avail[0]
+            else:
+                picked = _softmax_pick(viable, rnd)
+            local_avail.remove(picked)
+            picked_pos = players_by_id[picked]["position"]
+            counts[team][picked_pos] = counts[team].get(picked_pos, 0) + 1
+        for pid in local_avail:
+            survive[pid] += 1
+
+    return {pid: round(survive[pid] / sims * 100) for pid in survive}
+
+
+def _availability_map(draft: dict, players_by_id: dict[str, dict], sims: int = 200) -> dict[str, int]:
+    """Chance (0-100) each available player is still on the board at the user's
+    next pick, via Monte-Carlo. Ids absent from the map are ~100% available; an
+    empty map means there is no window to simulate (caller treats as N/A).
+
+    Cached per current pick so suggestions + the available list in one render
+    share a single simulation batch. Never raises."""
+    cur = draft["current_pick_index"]
+    cache = draft.get("_avail_cache")
+    if cache and cache[0] == cur:
+        return cache[1]
+    try:
+        result = _run_availability_sim(draft, players_by_id, sims)
+    except Exception:
+        result = {}
+    draft["_avail_cache"] = (cur, result)
+    return result
+
+
+def availability_for(draft: dict, players_by_id: dict[str, dict]) -> dict[str, int]:
+    """Cached-or-computed availability projection for the current pick."""
+    return _availability_map(draft, players_by_id)
 
 
 def _apply_pick(draft: dict, team: int, chosen: dict) -> None:
@@ -416,12 +531,20 @@ async def get_available(
     else:
         available.sort(key=lambda p: _rank_of(draft, p["id"]))
 
+    # Reuse the per-pick availability projection cache (populated here if the
+    # suggestions call hasn't run for this pick yet).
+    amap = availability_for(draft, players_by_id)
+
+    def av(pid: str) -> Optional[int]:
+        return None if not amap else amap.get(pid, 100)
+
     out = []
     for p in available[:limit]:
         row = _with_rank(draft, p)
         if view_set:
             vr = view_ranks.get(p["id"])
             row["view_rank"] = vr if vr and vr < UNRANKED else None
+        row["availability"] = av(p["id"])
         out.append(row)
     return out
 
@@ -439,6 +562,16 @@ async def get_suggestions(draft_id: str) -> dict:
         (players_by_id[pid] for pid in draft["available_ids"]),
         key=lambda p: _rank_of(draft, p["id"]),
     )
+
+    # "% still available at your next pick" projection, shared with get_available
+    # via the per-pick cache. Empty map (no window) -> availability is N/A (None).
+    amap = availability_for(draft, players_by_id)
+    _, window_teams = _availability_window(draft)
+    picks_until_next = len(window_teams)
+
+    def av(pid: str) -> Optional[int]:
+        return None if not amap else amap.get(pid, 100)
+
     user_players = [players_by_id[pid] for pid in draft["rosters"][str(draft["user_slot"])]]
     counts = roster_rules.position_counts(user_players)
     rnd = _current_round(draft)
@@ -474,7 +607,7 @@ async def get_suggestions(draft_id: str) -> dict:
         return skill(p) or late or (urgent and p["position"] in open_positions)
 
     best_available = [
-        _with_rank(draft, p) for p in available if allowed(p)
+        {**_with_rank(draft, p), "availability": av(p["id"])} for p in available if allowed(p)
     ][:3]
 
     # Value = how far a player has fallen past his *consensus* (ECR) rank,
@@ -491,7 +624,8 @@ async def get_suggestions(draft_id: str) -> dict:
             values.append((fall / rank, fall, p, rank))
     values.sort(key=lambda x: -x[0])
     best_value = [
-        {**_with_rank(draft, p), "value_fall": fall, "value_fall_pct": round(pct * 100), "ref_rank": rank}
+        {**_with_rank(draft, p), "value_fall": fall, "value_fall_pct": round(pct * 100),
+         "ref_rank": rank, "availability": av(p["id"])}
         for pct, fall, p, rank in values[:3]
     ]
 
@@ -514,7 +648,8 @@ async def get_suggestions(draft_id: str) -> dict:
         if candidate and candidate["id"] not in seen_positions:
             seen_positions.add(candidate["id"])
             reason = f"Fills your open {pos} starter slot" if needed else f"Best {pos} for your open FLEX"
-            fits.append({**_with_rank(draft, candidate), "fit_reason": reason})
+            fits.append({**_with_rank(draft, candidate), "fit_reason": reason,
+                         "availability": av(candidate["id"])})
     fits.sort(key=lambda p: p["draft_rank"] if p["draft_rank"] is not None else UNRANKED)
 
     # Ideal value at every position: the best available player per position,
@@ -537,6 +672,7 @@ async def get_suggestions(draft_id: str) -> dict:
                 **_with_rank(draft, candidate),
                 "ref_rank": ref if ref < UNRANKED else None,
                 "value_fall": (pick_no - ref) if ref < UNRANKED else None,
+                "availability": av(candidate["id"]),
             }
         )
 
@@ -549,6 +685,7 @@ async def get_suggestions(draft_id: str) -> dict:
         "best_fit": fits[:3],
         "by_position": by_position,
         "remaining_picks": remaining_picks,
+        "picks_until_next": picks_until_next,
         "open_starter_slots": open_slots,
         "urgent": urgent,
     }

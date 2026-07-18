@@ -28,6 +28,11 @@ def _fairness_label(pct: float) -> str:
     return "Lopsided trade"
 
 
+def fairness_label(pct: float) -> str:
+    """Public wrapper: the fairness band label for a given imbalance percentage."""
+    return _fairness_label(pct)
+
+
 async def analyze_trade(
     team_a_sends_ids: list[str],
     team_b_sends_ids: list[str],
@@ -59,9 +64,11 @@ async def analyze_trade(
     if label == "Fair trade":
         verdict = "Fair trade — both sides give up similar value."
         winner = None
+        headline = label
     else:
         winner = "Team A" if a_net_vbd > 0 else "Team B"
         verdict = f"{label} favoring {winner} (~{imbalance_pct}% value imbalance)."
+        headline = f"{label} — {winner}"
 
     result = {
         "season": dataset.season_in_use(),
@@ -74,6 +81,11 @@ async def analyze_trade(
         "imbalance_pct": imbalance_pct,
         "verdict": verdict,
         "winner": winner,
+        "fair": label == "Fair trade",
+        "winner_side": winner,
+        "margin_pct": imbalance_pct,
+        "verdict_label": label,
+        "headline": headline,
         "missing_player_ids": a_missing + b_missing,
     }
 

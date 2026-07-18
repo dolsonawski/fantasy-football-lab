@@ -17,7 +17,7 @@ import time
 import uuid
 from pathlib import Path
 
-from app.services import adp_client, dataset, espn_client, names
+from app.services import adp_client, dataset, espn_client, fantasypros_client, names
 
 # Re-exported for the import parser.
 normalize_name = names.normalize_name
@@ -38,6 +38,15 @@ DATA_DIR.mkdir(parents=True, exist_ok=True)
 ECR_FILE = _DATA_ROOT / "ecr.json"
 ECR_SEED_FILE = Path(__file__).resolve().parent.parent / "seed" / "ecr.json"
 ECR_SET_ID = "ecr"
+
+# FantasyPros consensus rankings pulled live from the cheatsheet pages
+# (auto-refreshing, per scoring format). Distinct from the uploaded/seed ECR
+# board (ECR_SET_ID) — these entries carry FantasyPros tier & bye.
+FP_ECR_SETS = {
+    "fp_ecr_standard": ("FantasyPros ECR (Auto)", "standard"),
+    "fp_ecr_half_ppr": ("FantasyPros ECR (Auto)", "half_ppr"),
+    "fp_ecr_ppr": ("FantasyPros ECR (Auto)", "ppr"),
+}
 
 ADP_SETS = {
     "adp_standard": ("FFC ADP (Standard)", "standard"),
@@ -121,6 +130,10 @@ async def list_sets(user_id: str | None = None) -> list[dict]:
             }
         )
     sets += [
+        {"id": sid, "name": name, "source": "fp_ecr", "format": fmt}
+        for sid, (name, fmt) in FP_ECR_SETS.items()
+    ]
+    sets += [
         {"id": sid, "name": name, "source": "adp", "format": fmt}
         for sid, (name, fmt) in ADP_SETS.items()
     ]
@@ -179,6 +192,11 @@ async def get_ranks(set_id: str) -> dict[str, int]:
             raise KeyError("ECR not loaded — upload a FantasyPros export first")
         return {e["player_id"]: e["rank"] for e in _load_ecr()["ranks"]}
 
+    if set_id in FP_ECR_SETS:
+        fmt = FP_ECR_SETS[set_id][1]
+        entries = await fantasypros_client.fetch_entries(fmt)
+        return {e["player_id"]: e["rank"] for e in entries}
+
     if set_id in ADP_SETS:
         fmt = ADP_SETS[set_id][1]
         entries = await adp_client.fetch_entries(fmt)
@@ -233,6 +251,8 @@ async def get_set_entries(set_id: str) -> list[dict] | None:
         if not ecr_available():
             raise KeyError("ECR not loaded")
         return _load_ecr()["ranks"]
+    if set_id in FP_ECR_SETS:
+        return await fantasypros_client.fetch_entries(FP_ECR_SETS[set_id][1])
     if set_id in ADP_SETS:
         return await adp_client.fetch_entries(ADP_SETS[set_id][1])
     if set_id in ESPN_RANK_SETS:
@@ -280,20 +300,55 @@ def delete_imported_set(set_id: str, user_id: str | None = None) -> bool:
     return True
 
 
+async def tiers_for_set(set_id: str) -> dict[str, int]:
+    """{player_id: tier} for sets whose entries carry a 'tier' — the uploaded
+    'ecr' board, imported sets, and the fp_ecr_* auto boards. Returns {} when
+    the set carries no tiers or is unavailable. Never raises."""
+    try:
+        entries = await get_set_entries(set_id)
+    except Exception:
+        return {}
+    if not entries:
+        return {}
+    tiers: dict[str, int] = {}
+    for e in entries:
+        tier = e.get("tier")
+        if tier is None:
+            continue
+        try:
+            tiers[e["player_id"]] = int(tier)
+        except (TypeError, ValueError, KeyError):
+            continue
+    return tiers
+
+
 def preferred_set_for_format(fmt: str) -> str:
     """Live FFC ADP is the preferred default board."""
     return f"adp_{fmt}"
 
 
 def preferred_compare_set_for_format(fmt: str) -> str:
-    """ECR is the reference of record when loaded; projections otherwise."""
-    return ECR_SET_ID if ecr_available() else f"proj_{fmt}"
+    """Reference of record: uploaded/seed ECR when loaded, else the
+    auto-pulled FantasyPros ECR for the format, else projections."""
+    if ecr_available():
+        return ECR_SET_ID
+    return f"fp_ecr_{fmt}"
 
 
 async def reference_ranks(fmt: str) -> dict[str, int]:
     """The consensus reference board used for draft-room values and slip
-    analysis: FantasyPros ECR when loaded, projections board otherwise."""
-    return await get_ranks(preferred_compare_set_for_format(fmt))
+    analysis. Prefers uploaded/seed ECR, then auto FantasyPros ECR for the
+    format, then the projections board — falling through on any failure."""
+    if ecr_available():
+        try:
+            return await get_ranks(ECR_SET_ID)
+        except Exception:
+            pass
+    try:
+        return await get_ranks(f"fp_ecr_{fmt}")
+    except Exception:
+        pass
+    return await get_ranks(f"proj_{fmt}")
 
 
 def default_set_for_format(fmt: str) -> str:

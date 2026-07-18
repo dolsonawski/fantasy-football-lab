@@ -1,5 +1,5 @@
 import { api } from "../api.js";
-import { escapeHtml, posPill, fmtNum, formatLabel, playerCell, avatar } from "../util.js";
+import { escapeHtml, posPill, fmtNum, formatLabel, playerCell, avatar, tierBadge } from "../util.js";
 
 const POSITIONS = ["ALL", "QB", "RB", "WR", "TE", "K", "DEF"];
 
@@ -27,7 +27,7 @@ const state = {
   rookiesOnly: false,
 };
 
-const FAMILY_RE = /^(adp|sleeper_adp|sleeper_dynasty|espn_rank|espn_adp|proj|computed)_(standard|half_ppr|ppr)$/;
+const FAMILY_RE = /^(adp|sleeper_adp|sleeper_dynasty|espn_rank|espn_adp|fp_ecr|proj|computed)_(standard|half_ppr|ppr)$/;
 
 function buildSources() {
   const seen = new Set();
@@ -48,7 +48,7 @@ function buildSources() {
 
 function resolveSetId(src) {
   // Family sources resolve against the current format; imported ids pass through.
-  return /^(adp|sleeper_adp|sleeper_dynasty|espn_rank|espn_adp|proj|computed)$/.test(src) ? `${src}_${state.format}` : src;
+  return /^(adp|sleeper_adp|sleeper_dynasty|espn_rank|espn_adp|fp_ecr|proj|computed)$/.test(src) ? `${src}_${state.format}` : src;
 }
 
 function sourceName(src) {
@@ -204,17 +204,23 @@ function summaryStrip(nameA, nameB, rows) {
     </div>
   `;
 
+  // Collapsed by default on mobile so the sortable table lands within ~1 screen; open on desktop.
+  const openAttr = window.matchMedia("(max-width:760px)").matches ? "" : " open";
+
   return `
-    <div class="grid-2" style="margin-bottom:16px;">
-      <div class="suggestion-card" style="border-left:3px solid var(--accent);">
-        <h3 style="color:var(--accent);">💎 Best Values on ${nameA}</h3>
-        ${best.map(rowHtml).join("") || `<div class="tag-note">No significant values found.</div>`}
+    <details class="rankings-summary-details"${openAttr}>
+      <summary>💎 Top values &amp; landmines (tap to toggle)</summary>
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div class="suggestion-card" style="border-left:3px solid var(--accent);">
+          <h3 style="color:var(--accent);">💎 Best Values on ${nameA}</h3>
+          ${best.map(rowHtml).join("") || `<div class="tag-note">No significant values found.</div>`}
+        </div>
+        <div class="suggestion-card" style="border-left:3px solid var(--danger);">
+          <h3 style="color:var(--danger);">💣 Landmines on ${nameA}</h3>
+          ${worst.map(rowHtml).join("") || `<div class="tag-note">No significant landmines found.</div>`}
+        </div>
       </div>
-      <div class="suggestion-card" style="border-left:3px solid var(--danger);">
-        <h3 style="color:var(--danger);">💣 Landmines on ${nameA}</h3>
-        ${worst.map(rowHtml).join("") || `<div class="tag-note">No significant landmines found.</div>`}
-      </div>
-    </div>
+    </details>
   `;
 }
 
@@ -241,17 +247,31 @@ function renderTable(container) {
     return `<th data-key="${c.key}"${cls}>${label} ${arrow}</th>`;
   }).join("");
 
-  const rowsHtml = rows.map((p) => `
+  // Tier dividers only make sense while rows are in ascending rank_a order (the default).
+  const showTiers =
+    state.sortKey === "rank_a" &&
+    state.sortDir === 1 &&
+    rows.some((r) => r.tier !== null && r.tier !== undefined);
+
+  let prevTier = null;
+  const rowsHtml = rows.map((p) => {
+    let divider = "";
+    if (showTiers && p.tier !== null && p.tier !== undefined && p.tier !== prevTier) {
+      divider = `<tr class="tier-divider"><td colspan="7">Tier ${escapeHtml(p.tier)}</td></tr>`;
+      prevTier = p.tier;
+    }
+    return `${divider}
     <tr class="${rowTint(p.value_score)}">
       <td style="font-weight:800;color:var(--text-dim);">${p.rank_a ?? "&mdash;"}</td>
       <td>${playerCell(p, `${escapeHtml(p.team)}${p.rookie ? " · <span style='color:var(--warning)'>Rookie</span>" : ""}`)}</td>
-      <td><span class="pill pos-${escapeHtml(p.position)}">${escapeHtml(p.pos_rank ?? p.position)}</span></td>
+      <td><span class="pill pos-${escapeHtml(p.position)}">${escapeHtml(p.pos_rank ?? p.position)}</span>${tierBadge(p.tier)}</td>
       <td style="font-weight:700;">${p.rank_b ?? "&mdash;"}</td>
       <td>${valueChip(p.value_score, p.delta)}</td>
       <td>${fmtNum(p.proj_points?.[state.format])}</td>
       <td class="col-hide-mobile">${p.perf_rank ? "#" + p.perf_rank : "&mdash;"}</td>
     </tr>
-  `).join("");
+  `;
+  }).join("");
 
   target.innerHTML = `
     ${summaryStrip(nameA, nameB, rows)}

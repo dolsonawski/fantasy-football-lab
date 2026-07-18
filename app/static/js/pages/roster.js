@@ -140,7 +140,7 @@ function renderResults(container, data) {
         <span class="slot-player">
           ${avatar(p, 24)}
           ${posPill(p.position)}
-          <span class="p-name">${escapeHtml(p.name)}${injuryBadge(p.injury_status)}</span>
+          <span class="p-name player-clickable" data-player-id="${p.id}" data-player-format="${data.format}">${escapeHtml(p.name)}${injuryBadge(p.injury_status)}</span>
         </span>
         <span class="slot-pts">${fmtNum(p.proj_points[data.format], 0)} proj</span>
       ` : `<span class="empty">EMPTY</span>`}
